@@ -1,6 +1,6 @@
 import MasterLayout from "../../../components/Layout/MasterLayout/MasterLayout";
 import React from "react";
-const Home = () => {
+const HomePage = () => {
 	return (
 		<MasterLayout>
 			<>
@@ -10,4 +10,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default HomePage;

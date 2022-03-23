@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-const Page404 = () => {
-	let a;
+const Page404Page = () => {
 	return (
 		<Wepper>
 			<div className="page-error">Page404</div>
@@ -16,4 +15,4 @@ const Wepper = styled.div`
 	}
 `;
 
-export default Page404;
+export default Page404Page;

@@ -13,8 +13,8 @@ const MasterLayout = ({ children }) => {
 		</WepperMasterLayout>
 	);
 };
-/* MasterLayout.propTypes = {
-	children: ReactNode,
+/* MasterLayout.PropTypes = {
+	//children: ReactNode,
 }; */
 
 const WepperMasterLayout = styled.div`
