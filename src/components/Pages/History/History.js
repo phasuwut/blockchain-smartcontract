@@ -10,8 +10,9 @@ const HistoryPage = (props) => {
 	const dispatch = useDispatch();
 	console.log(dispatch);
 	const profileStore = useSelector((state: RootState) => state.profile);
+	const etcStore = useSelector((state: RootState) => state.etc);
 	console.log(profileStore);
-
+	console.log(etcStore);
 	return (
 		<MasterLayout>
 			<Wepper>
