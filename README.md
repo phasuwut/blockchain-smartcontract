@@ -1,3 +1,16 @@
+# node v17.2.0
+
+use nvm yarn
+
+frist
+
+1. nvm use v17.2.0
+2. yarn install
+3. yarn start
+
+build
+yarn build
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
