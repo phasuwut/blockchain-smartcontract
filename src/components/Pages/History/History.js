@@ -13,6 +13,9 @@ const HistoryPage = (props) => {
 	const etcStore = useSelector((state: RootState) => state.etc);
 	console.log(profileStore);
 	console.log(etcStore);
+
+	console.log(`Build mode: ${process.env.NODE_ENV}`);
+	console.log(process.env);
 	return (
 		<MasterLayout>
 			<Wepper>
