@@ -9,12 +9,13 @@ pragma solidity >=0.7.0 <0.9.0;
 contract LotteryThai { // รอบนึง
     uint private LotteryMax=10; //จำนวนเลขของหวย
     uint private pricex=80; //ราคาหวย
-    uint private limit=4; //ซื้อได้สูงสุด 4 ใบ
+    uint private limit=2; //ซื้อได้สูงสุด 4 ใบ
     address payable private owner; // addressของเจ้าของเจ้าของsmartContract นี้
     
     function getBalanceOwner() public view returns(uint256){ // จำนวนเงินของเจ้าของsmartContract นี้
         return owner.balance;
     }
+
     constructor() payable{
         // กำหนดค่า
             listReward.push(Reward(
@@ -85,9 +86,10 @@ contract LotteryThai { // รอบนึง
         return false;
     }
 
+
     struct BuyingLottery{  //การซื้อLotteryในแต่ละครั้ง
-        bytes32 date;// วันที่
-        Lottery lottery;// Lottery ที่ซื้อ
+        string date;// วันที่
+        uint indexStockListLottery;//indexของstockListLottery   ที่ซื้อ
     }
     struct User{
         string fullName;
@@ -95,24 +97,41 @@ contract LotteryThai { // รอบนึง
         BuyingLottery[] myHistoryListBuyingLottery;// เก็บว่าเรานั้นซื้ออะไรไปบ้าง
     }
     mapping(address => User) public users;
-    address[] public listUserAll;
+    address[] public listUserAll; // เก็บว่า user นี้ลงทำเบียนไปแล้วหรือยัง
 
     function getDetailUserByAddress(address address1) public view returns(User memory ) {
         return users[address1];
+    }   
+    function getMyDetail() public view returns(User memory ) {
+        return users[msg.sender];
     }  
     function getAddressUserAll() public view returns(address[] memory ) {
         return listUserAll;
         //revert('Not found');
     }
-    function Registor(address address1, string memory fullName) public{
-        users[address1].addressUser=address1;
-        users[address1].fullName=fullName;
-
-        listUserAll.push(address1);
+    function Registor(string memory fullName) public{
+        require(!checkIsRegistor(msg.sender), "Registor "); //ลงทำเบียนแล้ว
+        users[msg.sender].addressUser=msg.sender;
+        users[msg.sender].fullName=fullName;
+        listUserAll.push(msg.sender);
+    }
+    function chnageFullName(string memory fullName) public{
+        require(checkIsRegistor(msg.sender), "not Registor "); 
+        users[msg.sender].fullName=fullName;
+    }
+    function checkIsRegistor(address address2 ) public view returns(bool){// check ว่าลงทำเบียนไปแล้ว หรือยัง
+        for(uint i=0;i<listUserAll.length;i++){ 
+            if(address2==listUserAll[i]){
+                return true;   
+            }
+        }
+        return false;   
     }
 
 
     function buyLottery(uint[] memory number) public payable {  
+        require(checkIsRegistor(msg.sender), "not Registor ");
+
         // check ว่าเลขนี้มีอยู่หรือป่าว
         for(uint i=0;i<number.length;i++){ 
             require(checkLotteryByNember(number[i]), "not buy1");
@@ -121,25 +140,46 @@ contract LotteryThai { // รอบนึง
         for(uint i=0;i<number.length;i++){ 
             require(!checkLotteryByNumberIsBuy(number[i]), "not buy2");
         }
+        // เช็คว่าซื้อเกินหรือป่าว
+        require(users[msg.sender].myHistoryListBuyingLottery.length<limit, "limit");
+
         // เช็คยอดเงิน
 
        // uint256 balance = msg.sender.balance; //จำนวนเงินของผู้ซื้อ
 
-        // เช็คว่าซื้อเกินหรือป่าว
-
+  
+   
         //มโนว่าโอนเงินเงินพอ
-       for(uint i=0;i<number.length;i++){ 
+        BuyingLottery[] storage arr1 = users[msg.sender].myHistoryListBuyingLottery; 
+        for(uint i=0;i<number.length;i++){ 
             for(uint j=0;j<stockListLottery.length; j++){
                 if(number[i] ==stockListLottery[j].number){ 
                     stockListLottery[j].whoBuy=msg.sender;
                     stockListLottery[j].isBuy=true;
-                } 
+                    arr1.push(BuyingLottery(
+                        {
+                            date:"test",
+                            indexStockListLottery:j
+                        }
+                    ));
+                }      
             }
         }
-
+        users[msg.sender].myHistoryListBuyingLottery=arr1;
     }
 
 
+
 }
+/* 
+//test
+ function transferEther() public payable {
+       // address(owner).transfer(_amount);
 
+        // msg.sender.send(111);
+        // msg.sender.transfer();
 
+       // owner.call.value(1).gas(2300);
+        msg.sender.call{value:100 ether };
+
+    } */
