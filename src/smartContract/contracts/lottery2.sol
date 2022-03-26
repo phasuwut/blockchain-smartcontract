@@ -7,11 +7,12 @@ pragma solidity >=0.7.0 <0.9.0;
  * @dev Set & change owner
  */
 contract LotteryThai { // รอบนึง
-    uint private LotteryMax=10; //จำนวนเลขของหวย
+    uint private LotteryMax=50; //จำนวนเลขของหวย
     uint private pricex=80; //ราคาหวย
     uint private limit=2; //ซื้อได้สูงสุด 4 ใบ
     address payable private owner; // addressของเจ้าของเจ้าของsmartContract นี้
-    
+    uint256 public timeLastReword; //เก็บเวลาที่ออกลางวันครั้งล่าสุด
+
     function getBalanceOwner() public view returns(uint256){ // จำนวนเงินของเจ้าของsmartContract นี้
         return owner.balance;
     }
@@ -33,16 +34,27 @@ contract LotteryThai { // รอบนึง
 
             generateStockListLottery();
             owner = payable(msg.sender);
+            timeLastReword= Time_call();
     }
 
     struct Reward{ // รางวัล
         string name; //ชื่อรางวัน
         uint price; ///เงินรางวัน
     }
-    Reward[] private listReward;
+    Reward[] private listReward; // เก็บว่ามีรางวันอะไรบ้าง
     function getListReward() public view returns(Reward[] memory){
         return listReward;
     }
+
+    //ยังทำไม่เสร็จ
+    function awarding() public {//การออกรางวัล
+    
+        if( Time_call() * 2 minutes>=timeLastReword){
+            timeLastReword=Time_call();
+        } 
+    }
+
+
 
 
     struct Lottery {   //lottery แต่ละใบ
@@ -144,9 +156,8 @@ contract LotteryThai { // รอบนึง
         require(users[msg.sender].myHistoryListBuyingLottery.length<limit, "limit");
 
         // เช็คยอดเงิน
-
        // uint256 balance = msg.sender.balance; //จำนวนเงินของผู้ซื้อ
-
+        //check ว่าเงินถึงหรือป่าว
   
    
         //มโนว่าโอนเงินเงินพอ
