@@ -117,11 +117,19 @@ contract LotteryThai { // รอบนึง
         for(uint i=0;i<number.length;i++){ 
             require(!checkLotteryByNumberIsBuy(number[i]), "not buy2");
         }
+        // เช็คยอดเงิน
 
-        // chech ว่าเลขนี้ซื้อไปยัง
-        // check ว่าซื้อเกินโคต้าต่องวดหรือไม่
+
+        //มโนว่าโอนเงินเงินพอ
+       for(uint i=0;i<number.length;i++){ 
+            for(uint j=0;j<stockListLottery.length; j++){
+                if(number[i] ==stockListLottery[j].number){ 
+                    stockListLottery[j].whoBuy=msg.sender;
+                    stockListLottery[j].isBuy=true;
+                } 
+            }
+        }
     }
-
 
     // struct Registor { // ข้อมูลของผู้ใช้
     //     string fullName; 
