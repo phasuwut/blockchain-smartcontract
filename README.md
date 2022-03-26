@@ -1,10 +1,10 @@
-# node v17.2.0
+# node v16.13.2
 
 use nvm yarn
 
 frist
 
-1. nvm use v17.2.0
+1. nvm use v16.13.2
 2. yarn install
 3. yarn start
 
