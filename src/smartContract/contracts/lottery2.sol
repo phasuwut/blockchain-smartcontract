@@ -39,7 +39,7 @@ contract LotteryThai { // รอบนึง
         string name; //ชื่อรางวัน
         uint price; ///เงินรางวัน
     }
-    Reward[] public listReward;
+    Reward[] private listReward;
     function getListReward() public view returns(Reward[] memory){
         return listReward;
     }
@@ -47,11 +47,11 @@ contract LotteryThai { // รอบนึง
 
     struct Lottery {   //lottery แต่ละใบ
         uint number; //หมายเลข
-        string period; //(งวดวันที่ 16022565)
+        uint256 period; //(งวดวันที่ 16022565)
         address whoBuy; // ใครเป็นคนซื้อ
         bool isBuy; //  เลขนี้ซื้อไปยัง
     }
-    Lottery[] public stockListLottery;
+    Lottery[]  private stockListLottery;
     function getStockListLotteryAll() public view returns(Lottery[] memory){
         return stockListLottery;
     }
@@ -60,7 +60,7 @@ contract LotteryThai { // รอบนึง
             stockListLottery.push(Lottery(
                 {   
                     number: i,
-                    period:"16022565",
+                    period: Time_call(),
                     whoBuy: address(0), //default
                     isBuy:  i%2==0? true:false
                 }
@@ -88,7 +88,7 @@ contract LotteryThai { // รอบนึง
 
 
     struct BuyingLottery{  //การซื้อLotteryในแต่ละครั้ง
-        string date;// วันที่
+        uint256 dateBuy;// วันที่ซื้อ
         uint indexStockListLottery;//indexของstockListLottery   ที่ซื้อ
     }
     struct User{
@@ -96,8 +96,8 @@ contract LotteryThai { // รอบนึง
         address addressUser;
         BuyingLottery[] myHistoryListBuyingLottery;// เก็บว่าเรานั้นซื้ออะไรไปบ้าง
     }
-    mapping(address => User) public users;
-    address[] public listUserAll; // เก็บว่า user นี้ลงทำเบียนไปแล้วหรือยัง
+    mapping(address => User)  private users;
+    address[]  private listUserAll; // เก็บว่า user นี้ลงทำเบียนไปแล้วหรือยัง
 
     function getDetailUserByAddress(address address1) public view returns(User memory ) {
         return users[address1];
@@ -158,7 +158,7 @@ contract LotteryThai { // รอบนึง
                     stockListLottery[j].isBuy=true;
                     arr1.push(BuyingLottery(
                         {
-                            date:"test",
+                            dateBuy: Time_call(),
                             indexStockListLottery:j
                         }
                     ));
@@ -169,7 +169,12 @@ contract LotteryThai { // รอบนึง
     }
 
 
-
+    // helper
+    function Time_call() private view  returns (uint256){
+        // ต้องหาทางแปลง 
+       // ใน return มันได้ เป็นแบบนี้ Sun Mar 27 2022 01:12:00 GMT+0700 (Indochina Time)
+        return block.timestamp;
+    }
 }
 /* 
 //test
@@ -183,3 +188,5 @@ contract LotteryThai { // รอบนึง
         msg.sender.call{value:100 ether };
 
     } */
+
+   
