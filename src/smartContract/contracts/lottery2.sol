@@ -10,8 +10,12 @@ contract LotteryThai { // รอบนึง
     uint private LotteryMax=10; //จำนวนเลขของหวย
     uint private pricex=80; //ราคาหวย
     uint private limit=4; //ซื้อได้สูงสุด 4 ใบ
-
-    constructor() {
+    address payable private owner; // addressของเจ้าของเจ้าของsmartContract นี้
+    
+    function getBalanceOwner() public view returns(uint256){ // จำนวนเงินของเจ้าของsmartContract นี้
+        return owner.balance;
+    }
+    constructor() payable{
         // กำหนดค่า
             listReward.push(Reward(
                 {   
@@ -27,7 +31,7 @@ contract LotteryThai { // รอบนึง
             ));
 
             generateStockListLottery();
-
+            owner = payable(msg.sender);
     }
 
     struct Reward{ // รางวัล
@@ -119,6 +123,9 @@ contract LotteryThai { // รอบนึง
         }
         // เช็คยอดเงิน
 
+       // uint256 balance = msg.sender.balance; //จำนวนเงินของผู้ซื้อ
+
+        // เช็คว่าซื้อเกินหรือป่าว
 
         //มโนว่าโอนเงินเงินพอ
        for(uint i=0;i<number.length;i++){ 
@@ -129,155 +136,10 @@ contract LotteryThai { // รอบนึง
                 } 
             }
         }
+
     }
 
-    // struct Registor { // ข้อมูลของผู้ใช้
-    //     string fullName; 
-    //     string tel;
-    //     string email;
-    //     address addressBuyer;
-    // }
-    // Registor[] private listRegistor; // เป็นarray ที่เก็บข้อมูลของผู้ใช้ทั้งหมด
 
-
-
-
-    // struct Lottery {   //lottery แต่ละใบ
-    //     uint number; //หมายเลข
-    //     string period; //(งวดวันที่ 16022565)
-    //     address whoBought; // ใครเป็นคนซื้อ
-    // }
-    // Lottery[] public stockListLottery;
-
-    // mapping(address => Lottery) public myBuyingLottery;
-
-
-
-    // function getListReward() public view returns(Reward[] memory){
-    //     return listReward;
-    // }
-
-    // function getStockListLottery() public view returns(Lottery[] memory){
-    //     return stockListLottery;
-    // }
-    // function generateStockListLottery() private {
-    //    for(uint i=0;i<LotteryMax;i++){
-    //         stockListLottery.push(Lottery(
-    //             {   
-    //                 number: i,
-    //                 period:"16022565",
-    //                 whoBought: address(0)
-    //             }
-    //         ));
-    //    }
-    // }
-
-    // function getBuyingLottery() public view returns(Lottery memory){ 
-    //     return myBuyingLottery[msg.sender];
-    // }
 }
 
 
-
-// contract Lottery {
-
-//     struct registor { // ข้อมูลของผู้ใช้
-//         bytes32 fullName; 
-//         bytes32 tel;
-//         bytes32 email;
-//         address addressBuyer;
-//     }
-
-//     struct listLottery { // lottery แต่ละใบ
-//         bytes32 number; //หมายเลข
-//         bytes32 period; //(งวดวันที่ 16022565)
-//         address addressLottery;
-
-//     }
-
-//     struct stockListLottery{
-//         bytes32 number; //หมายเลข
-//         uint total;
-//         address[] addressLottery;
-//     }
-
-//     struct buyingLottery{  //การซื้อLotteryในแต่ละครั้ง
-//         bytes32 date;// วันที่
-//         address[] addressLottery; //array
-//         address addressBuyer; //address ของผู้ซื้อ
-
-//         address addressBuyingLottery;  // ของการซื้อLotteryในแต่ละครั้ง
-//     }
-
-
-//     function registor(bytes32 fullName, bytes32 tel, bytes32 email)public {
-//     }
-//     function buyLottery(bytes32[] number)public{ //
-//     }
-//     function checkLottery(bytes32  number)public{ // เช็คว่าซื้อไปหรือยัง
-//     }
-//     function rewardCheck(bytes32 number,  bytes32 period)public{  // เช็ครางวัล
-//     }
-//     function showHistory(address addressBuyingLottery)public{
-//     }
-
-
-//     struct reward{
-//         bytes32 name; //ชื่อรางวัน
-//         uint price; ///เงินรางวัน
-//     }
-//     struct listReward{ 
-//         reward[] reward;
-//         /* 
-//             [
-//                 {
-//                     name:รางวันที่1  ,
-//                     price:1000
-//                 },
-//                 {
-//                     name:รางวันที่2  ,
-//                     price:50
-//                 }
-//             ]
-//         */
-//     }
-
-//     struct winLottery{
-//         bytes32 number; //หมายเลข
-//         bytes32 period; //(งวดวันที่ 16022565)
-//         reward reward;
-//     }
-//     struct listWinLottery{
-//         winLottery[] winLottery;
-//         address addressListWinLottery;
-//         /*         [
-//                     {   
-//                         number: 11,
-//                         period:งวดวันที่ 16022565,
-//                         reward:{
-//                             name:รางวันที่1  ,
-//                             price:1000
-//                         },
-//                     },
-//                         {   
-//                         number: 00,
-//                         period:งวดวันที่ 16022565,
-//                         reward:{
-//                             name:รางวันที่2 ,
-//                             price:50
-//                         },
-//                     },
-//                 ]
-//         */
-//     }
-
-//     function การออกสลาก(){
-
-//     }
-//     function การออกรางวัน(){
-
-//     }
-// }
-
-       
-       
