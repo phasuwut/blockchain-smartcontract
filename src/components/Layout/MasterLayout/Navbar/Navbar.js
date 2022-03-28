@@ -34,8 +34,8 @@ const MasterLayoutNavbar = () => {
 					<Nav.Link href="/">Home</Nav.Link>
 					<Nav.Link href="search">search</Nav.Link>
 					<Nav.Link href="history">history</Nav.Link>
-					<NavDropdown title="Dropdown" id="basic-nav-dropdown">
-						<NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+					<NavDropdown title="Smart Contract" id="basic-nav-dropdown">
+						<NavDropdown.Item href="smart-contract/test1">SmartContractTest1</NavDropdown.Item>
 						<NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
 						<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
 						<NavDropdown.Divider />
