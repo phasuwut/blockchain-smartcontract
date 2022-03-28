@@ -1,8 +1,30 @@
 import { Button, Form, Nav, NavDropdown, Navbar } from "react-bootstrap";
-
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { connectWallet, getCurrentWalletConnected } from "../../../../lib/interact";
 
 const MasterLayoutNavbar = () => {
+	const [walletAddress, setWallet] = useState("");
+	const [status, setStatus] = useState("");
+
+	const connectWalletPressed = async () => {
+		const walletResponse = await connectWallet();
+		//console.log(walletResponse);
+		setStatus(walletResponse.status);
+		setWallet(walletResponse.address);
+	};
+	const addSmartContractListener = () => {
+		const fetchWallet = async () => {
+			const { address, status } = await getCurrentWalletConnected();
+			console.log(address);
+			setWallet(address);
+			setStatus(status);
+		};
+		fetchWallet();
+	};
+	useMemo(()=>{
+		addSmartContractListener(); 
+	},[])
+
 	return (
 		<Navbar bg="light" expand="lg">
 			<Navbar.Brand href="/">Block Chain</Navbar.Brand>
@@ -21,7 +43,16 @@ const MasterLayoutNavbar = () => {
 					</NavDropdown>
 				</Nav>
 				<Form inline>
-					<Button variant="outline-success">Buttom</Button>
+					<Button variant="outline-success" onClick={connectWalletPressed}>
+						{walletAddress.length > 0 ? (
+							"Connected: " +
+							String(walletAddress).substring(0, 6) +
+							"..." +
+							String(walletAddress).substring(38)
+						) : (
+							<span>Connect Wallet</span>
+						)}
+					</Button>
 				</Form>
 			</Navbar.Collapse>
 		</Navbar>
