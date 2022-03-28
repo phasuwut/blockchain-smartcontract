@@ -9,16 +9,12 @@ import { setWallet as setWalletStore } from "../../../../store/wallet/wallet";
 const MasterLayoutNavbar = () => {
 	//dedux
 	const dispatch = useDispatch();
-	//console.log(dispatch);
 	const walletStore = useSelector((state: RootState) => state.wallet);
-	console.log(walletStore);
 
 	const [walletAddress, setWallet] = useState("");
 	const [status, setStatus] = useState("");
-
 	const connectWalletPressed = async () => {
 		const walletResponse = await connectWallet();
-		//console.log(walletResponse);
 		setStatus(walletResponse.status);
 		setWallet(walletResponse.address);
 	};
@@ -40,6 +36,9 @@ const MasterLayoutNavbar = () => {
 			dispatch(setWalletStore({ ...walletStore.wallet, money:money }));
 		}
 	}, [walletAddress]);
+
+
+
 
 	return (
 		<Navbar bg="light" expand="lg">
