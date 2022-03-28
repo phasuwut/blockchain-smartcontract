@@ -1,10 +1,14 @@
+import {} from"@web3-react/core"
+
 import MasterLayout from "../../../Layout/MasterLayout/MasterLayout";
 import React from 'react'
+
 const Test1 = () => {
+
+
   return (
       <MasterLayout>
-
-        <div div>SmaerContractTest1</div>
+          <div div>SmaerContractTest1</div>
       </MasterLayout>
     
   )

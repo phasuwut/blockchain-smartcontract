@@ -1,8 +1,18 @@
 import { Button, Form, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
-import { connectWallet, getCurrentWalletConnected } from "../../../../lib/interact";
+import { connectWallet, getCurrentWalletConnected, getUserBalance } from "../../../../lib/interact";
+import { useDispatch, useSelector } from "react-redux";
+
+import { RootState } from "../../../../store/rootReducer";
+import { setWallet as setWalletStore } from "../../../../store/wallet/wallet";
 
 const MasterLayoutNavbar = () => {
+	//dedux
+	const dispatch = useDispatch();
+	//console.log(dispatch);
+	const walletStore = useSelector((state: RootState) => state.wallet);
+	console.log(walletStore);
+
 	const [walletAddress, setWallet] = useState("");
 	const [status, setStatus] = useState("");
 
@@ -15,15 +25,21 @@ const MasterLayoutNavbar = () => {
 	const addSmartContractListener = () => {
 		const fetchWallet = async () => {
 			const { address, status } = await getCurrentWalletConnected();
-			console.log(address);
 			setWallet(address);
 			setStatus(status);
+			dispatch(setWalletStore({ ...walletStore.wallet, walletAddress: address }));
 		};
 		fetchWallet();
 	};
-	useMemo(()=>{
-		addSmartContractListener(); 
-	},[])
+	useMemo(() => {
+		addSmartContractListener();
+	}, []);
+	useEffect(async () => {
+		if (walletAddress !== "") {
+			const money = await getUserBalance(walletAddress);
+			dispatch(setWalletStore({ ...walletStore.wallet, money:money }));
+		}
+	}, [walletAddress]);
 
 	return (
 		<Navbar bg="light" expand="lg">
