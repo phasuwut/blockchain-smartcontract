@@ -1,6 +1,6 @@
 //export const helloWorldContract;
 //require("dotenv").config();
-const alchemyKey = "wss://eth-ropsten.alchemyapi.io/v2/nVVoijUOP0XX29ovA6tIj7coXoDMXDuy"; //process.env.REACT_APP_ALCHEMY_KEY;
+const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
