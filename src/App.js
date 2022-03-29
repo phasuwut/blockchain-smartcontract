@@ -4,7 +4,7 @@ import HistoryPage from "./components/Pages/History/History";
 import HomePage from "./components/Pages/Home/Home";
 import Page404Page from "./components/Pages/Page404/Page404";
 import SearchPage from "./components/Pages/Search/Search";
-import SmartContractTest1 from "./components/Pages/SmartContract/Test-1/Test1"
+import SmartContractTest1 from "./components/Pages/SmartContract/Test-1/Test1";
 
 function App() {
 	return (
