@@ -38,8 +38,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm run build"
-
+    "heroku-postbuild": "npm run build",
+    "dev": "react-app-rewired start"
 
   },
   "eslintConfig": {

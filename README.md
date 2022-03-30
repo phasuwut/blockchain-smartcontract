@@ -6,7 +6,13 @@ frist
 
 1. nvm use v16.13.2
 2. yarn install
-3. yarn start
+3. yarn dev
+
+# https://localcoder.org/react-app-runs-locally-crashes-when-on-heroku-error-code-h10
+heroku deploy มันต้องใช้  "start": "serve -s build", ในการdeploy 
+ดังนั้นเลยใช้  "dev": "react-app-rewired start" พีื ตอนdevแทน
+
+
 
 build
 yarn build
