@@ -12,7 +12,8 @@ frist
 heroku deploy มันต้องใช้  "start": "serve -s build", ในการdeploy 
 ดังนั้นเลยใช้  "dev": "react-app-rewired start" พีื ตอนdevแทน
 
-
+Production และ uat จะเชื่อมต่อกับ Heroku
+develop จะเอาไว้เขียน code หลัก
 
 build
 yarn build
