@@ -7,9 +7,9 @@ pragma solidity >=0.7.0 <0.9.0;
  * @dev Implements voting process along with vote delegation
  */
 contract Lottery {
-    uint private amountMax = 10; //จำนวนชุด
-    uint private limit=2; //ซื้อได้สูงสุด 4 ใบ
-    uint private LotteryMax=15; //จำนวนเลขของหวย ต่อเลข
+    uint256 private amountMax = 10; //จำนวนชุด
+    uint256 private limit=2; //ซื้อได้สูงสุด 4 ใบ
+    uint256 private LotteryMax=15; //จำนวนเลขของหวย ต่อเลข
     /*     
 
         uint private pricex=80; //ราคาหวย
@@ -23,7 +23,7 @@ contract Lottery {
         string email;
         string [] stockListLottery; // เอาไว้เก็บว่าเราซื้อเลขใดไปบ้าง
     }
-    mapping (address => Buyer) public buyerStruct;
+    mapping (address => Buyer) private buyerStruct;
     address[] buyer_result;  // เก็บ address ข้อมูลผู้ใช้
 
     function buyersRegister(string memory firstName, string memory lastName,string memory email) public {
@@ -65,7 +65,7 @@ contract Lottery {
     struct Lottery_ { // ข้อมูล
         string lotteryNo; // หมายเลขหวย
         string period; // ช่วงวันที่ 
-        uint amount;
+        uint256 amount;
         address [] listAddress; // address ของคนซื้อ 
     }
 
@@ -90,7 +90,7 @@ contract Lottery {
     function getDetailLotteryById(string memory a) public view returns(Lottery_ memory){
         return lotteryStruct[a];
     }
-    function count_lottery() view public returns (uint) {
+    function count_lottery() view public returns (uint256) {
         return lottery_result.length;
     }
 
@@ -98,15 +98,14 @@ contract Lottery {
         // พวกการเช็ค่าต่างๆ ยังไม่ได้ทำ
         require(!checkStringEqualNull(period), "period !== null"); 
         require(!checkStringEqualNull(lotteryNo), "lotteryNo !== null"); 
+        require(checkNumberAndGenerateLottery(lotteryNo,period), "not buy2");
 
-
-        //require(!checkNumber(lotteryNo,period), "not buy2");
 
         string memory _address = concatenate(lotteryNo,period); /// PK
        
         lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
         lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
-        buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง
+        buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
     }
 
     //check ว่าเลขนี้มีอยู่หรือป่าว
@@ -127,12 +126,16 @@ contract Lottery {
 
     //check ว่าเลขนี้มีอยู่หรือป่าว ถ้าไม่มีให้สร้างขึ้นมาใหม่ แต่ต้ามสร้างเกินเลขที่กำหนดไว่า
     function checkNumberAndGenerateLottery(string memory lotteryNo, string memory period) private returns (bool){
-        if(checkNumber(lotteryNo,period)){
-             LotteryRegister(lotteryNo,period);
-             return true;
-        }else{
+        if(st2num(lotteryNo)>LotteryMax){ 
+            return false;
+        }else if(st2num(lotteryNo)==0){
             return false;
         }
+
+        if(!checkNumber(lotteryNo,period)){
+             LotteryRegister(lotteryNo,period);
+        }
+        return true;
     }
 
 
@@ -153,19 +156,19 @@ contract Lottery {
     function getMyaddress() view public returns(address){
         return msg.sender;
     }
-    function checkStringEqualNull(string memory string1) public pure returns (bool){ 
+    function checkStringEqualNull(string memory string1) private pure returns (bool){ 
         if( keccak256(abi.encodePacked(string1)) == keccak256(abi.encodePacked("")) ){
             return true;
         }
          return false;
     }
-    function checkStringEqual(string memory string1, string memory string2) public pure returns (bool){ 
+    function checkStringEqual(string memory string1, string memory string2) private pure returns (bool){ 
         if( keccak256(abi.encodePacked(string1)) == keccak256(abi.encodePacked(string2)) ){
             return true;
         }
          return false;
     }
-    function st2num(string memory numString) public pure returns(uint) {
+    function st2num(string memory numString) private pure returns(uint) {
         uint  val=0;
         bytes   memory stringBytes = bytes(numString);
         for (uint  i =  0; i<stringBytes.length; i++) {
