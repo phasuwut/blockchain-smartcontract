@@ -28,11 +28,12 @@ contract Lottery {
 
     function buyersRegister(string memory firstName, string memory lastName,string memory email) public {
         // firstName, lastName, email ต้องไม่เป็นค่าว่าง
-    
-       
         require(!checkStringEqualNull(email), "firstName !== null"); 
         require(!checkStringEqualNull(lastName), "lastName !== null");  
         require(!checkStringEqualNull(email), "email !== null"); 
+
+        // check ว่าลงทะเบียนไปแล้วหรือยัง
+        require(checkStringEqualNull(buyerStruct[msg.sender].email), "Registered");
 
         buyerStruct[msg.sender].firstName = firstName;
         buyerStruct[msg.sender].lastName = lastName;
