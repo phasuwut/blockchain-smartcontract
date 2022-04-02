@@ -9,7 +9,7 @@ pragma solidity >=0.7.0 <0.9.0;
 contract Lottery {
     uint256 private amountMax = 10; //จำนวนชุด
     uint256 private limit=2; //ซื้อได้สูงสุด 4 ใบ
-    uint256 private LotteryMax=15; //จำนวนเลขของหวย ต่อเลข
+    uint256 private LotteryMax=3; //จำนวนตัวเลขของหวย ต่อเลข
     /*     
 
         uint private pricex=80; //ราคาหวย
@@ -28,9 +28,13 @@ contract Lottery {
 
     function buyersRegister(string memory firstName, string memory lastName,string memory email) public {
         // firstName, lastName, email ต้องไม่เป็นค่าว่าง
-        require(!checkStringEqualNull(email), "firstName !== null"); 
-        require(!checkStringEqualNull(lastName), "lastName !== null");  
-        require(!checkStringEqualNull(email), "email !== null"); 
+        /*         
+            require(!checkStringEqualNull(firstName), "firstName !== null"); 
+            require(!checkStringEqualNull(lastName), "lastName !== null");  
+            require(!checkStringEqualNull(email), "email !== null");  
+        */
+        require((!checkStringEqualNull(firstName) && !checkStringEqualNull(lastName) && !checkStringEqualNull(email)),"Incomplete information"); // ป้อนข้อมูลไม่ครบ
+
 
         // check ว่าลงทะเบียนไปแล้วหรือยัง
         require(checkStringEqualNull(buyerStruct[msg.sender].email), "Registered");
@@ -68,7 +72,6 @@ contract Lottery {
         uint256 amount;
         address [] listAddress; // address ของคนซื้อ 
     }
-
     mapping (string => Lottery_) public lotteryStruct;
     string[] lottery_result;  //เก็บ address ข้อ Lottery
 
@@ -96,25 +99,40 @@ contract Lottery {
 
     function buyingLottery(string memory lotteryNo, string memory period) public checkRegistor(){
         // พวกการเช็ค่าต่างๆ ยังไม่ได้ทำ
-        require(!checkStringEqualNull(period), "period !== null"); 
-        require(!checkStringEqualNull(lotteryNo), "lotteryNo !== null"); 
-        require(checkNumberAndGenerateLottery(lotteryNo,period), "not buy2");
-
-
         string memory _address = concatenate(lotteryNo,period); /// PK
-       
-        lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
-        lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
-        buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
+
+
+        if(checkNumberAndGenerateLottery(lotteryNo,period)){
+            // กรณีที่ยังไมามีเลขนี้
+            lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
+            lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
+            buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
+        }else{
+            // กรณีที่มีเลขนี้แล้ว
+            if(lotteryStruct[ _address].amount>0){
+                    
+
+
+
+                lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
+                lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
+                buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
+            }else{
+                require(false ,"not buy"); 
+            }
+        }
+
+     
+
     }
 
     //check ว่าเลขนี้มีอยู่หรือป่าว
     function checkNumber(string memory lotteryNo, string memory period) public view returns (bool){
-        if(st2num(lotteryNo)>LotteryMax){ 
-            return false;
-        }else if(st2num(lotteryNo)==0){
-            return false;
-        }
+        require((!checkStringEqualNull(lotteryNo) && !checkStringEqualNull(period) ),"Incomplete information"); // ป้อนข้อมูลไม่ครบ
+        require(((bytes(lotteryNo).length==LotteryMax) ),"lotteryNo Incorrect"); 
+        require(((bytes(period).length==8) ),"period Incorrect"); 
+
+        // เหลือพวก มันเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว
 
         string memory _address = concatenate(lotteryNo,period);
         if( checkStringEqual(lotteryStruct[_address].lotteryNo,lotteryNo)){ // เจอว่ามีเลขนี้อยู่นะ
@@ -126,19 +144,16 @@ contract Lottery {
 
     //check ว่าเลขนี้มีอยู่หรือป่าว ถ้าไม่มีให้สร้างขึ้นมาใหม่ แต่ต้ามสร้างเกินเลขที่กำหนดไว่า
     function checkNumberAndGenerateLottery(string memory lotteryNo, string memory period) private returns (bool){
-        if(st2num(lotteryNo)>LotteryMax){ 
-            return false;
-        }else if(st2num(lotteryNo)==0){
-            return false;
-        }
+        require((!checkStringEqualNull(lotteryNo) && !checkStringEqualNull(period) ),"Incomplete information"); // ป้อนข้อมูลไม่ครบ
+        require(((bytes(lotteryNo).length==LotteryMax) ),"lotteryNo Incorrect"); 
+        require(((bytes(period).length==8) ),"period Incorrect"); 
 
         if(!checkNumber(lotteryNo,period)){
-             LotteryRegister(lotteryNo,period);
+            LotteryRegister(lotteryNo,period);
+            return false;
         }
         return true;
     }
-
-
 
 
 
@@ -157,12 +172,12 @@ contract Lottery {
         return msg.sender;
     }
     function checkStringEqualNull(string memory string1) private pure returns (bool){ 
-        if( keccak256(abi.encodePacked(string1)) == keccak256(abi.encodePacked("")) ){
+        if(bytes(string1).length == 0){
             return true;
         }
-         return false;
+        return false;
     }
-    function checkStringEqual(string memory string1, string memory string2) private pure returns (bool){ 
+    function checkStringEqual(string memory string1, string memory string2) private pure returns (bool){ // string1== string2
         if( keccak256(abi.encodePacked(string1)) == keccak256(abi.encodePacked(string2)) ){
             return true;
         }
@@ -181,6 +196,7 @@ contract Lottery {
         }
       return val;
     }
+
 
 }
 
