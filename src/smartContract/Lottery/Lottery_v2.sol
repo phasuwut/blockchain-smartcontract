@@ -97,17 +97,19 @@ contract Lottery {
     function buyingLottery(string memory lotteryNo, string memory period) public checkRegistor(){
         // พวกการเช็ค่าต่างๆ ยังไม่ได้ทำ
         string memory _address = concatenate(lotteryNo,period); /// PK
-        if(checkNumberAndGenerateLottery(lotteryNo,period)){        // กรณีที่ยังไมามีเลขนี้
+      
+        //เช็คว่าเรานั้นยังสามารถซื้อไดเ้อยู่หรือไม่
+      
+      
+      
+      
+        if(checkNumberAndGenerateLottery(lotteryNo,period)){   // กรณีที่ยังไมามีเลขนี้
+    
             lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
             lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
             buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
-        }else{          // กรณีที่มีเลขนี้แล้ว
-   
+        }else{ // กรณีที่มีเลขนี้แล้ว
             if(lotteryStruct[ _address].amount>0){ //เช็คว่าเลขนี้ยังซื้อได้อยู่
-                    
-
-                //เช็คว่าเรานั้นยังสามารถซื้อไดเ้อยู่หรือไม่
-
                 lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
                 lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
                 buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
