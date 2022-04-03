@@ -73,8 +73,9 @@ contract Lottery {
         uint256 amount;
         address [] listAddress; // address ของคนซื้อ 
     }
-    mapping (string => Lottery_) public lotteryStruct;
-    string[] lottery_result;  //เก็บ address ข้อ Lottery
+    mapping (string => Lottery_) private lotteryStruct;
+    mapping (string => string[]) private listPeriod; // เก็บว่าแต่ละงวดมีเลขอะไรบ้าง
+    string[] private period_result;
 
     // กำหนดค่าเริ่มต้น 
     function LotteryRegister(string memory lotteryNo, string memory period) private {
@@ -84,16 +85,21 @@ contract Lottery {
         lotteryStruct[_address].period = period; // งวดวันที่ 
         lotteryStruct[_address].amount = amountMax; // จำนวนว่ามีกี่ใบ
         lotteryStruct[_address].listAddress = new address[](0); // address ของคนซื้อ 
-     
-        lottery_result.push(_address); 
+      
+        if(listPeriod[period].length==0){
+            period_result.push(period);
+        }
+        listPeriod[period].push(lotteryNo);
     }
 
-    function get_lottery_result() view public returns (string[] memory) {
-        return lottery_result;
+    function getPeriodResult() view public returns (string[] memory) {
+        return period_result;
     }
-    function count_lottery() view public returns (uint256) {
-        return lottery_result.length;
+    function getPeriodResult(string memory string1) view public returns (string[] memory) {
+        return listPeriod[string1];
     }
+
+
     function getDetailLotteryByIndex(string memory index1) public view returns(Lottery_ memory){
         return lotteryStruct[index1];
     }
@@ -199,7 +205,9 @@ contract Lottery {
          return false;
     }
 
-
+// function checkDate(string memory date)public view returns(bool){
+//     require false;
+// }
 
 }
 
