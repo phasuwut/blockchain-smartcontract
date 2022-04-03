@@ -19,7 +19,10 @@ contract Lottery {
         string firstName;
         string lastName;
         string email;
-        string [] stockListLottery; // เอาไว้เก็บว่าเราซื้อเลขใดไปบ้าง
+        //string [] stockListLottery; // เอาไว้เก็บว่าเราซื้อเลขใดไปบ้าง
+        //mapping (address => Buyer)  buyerStruct;
+        mapping (string => string[])  stockListLotteryByPeriod;
+        string [] myPeriod; //เก็บว่าเราน้ันซื้องวดไหนไปบ้าง
     }
     mapping (address => Buyer) private buyerStruct;
     address[] buyer_result;  // เก็บ address ข้อมูลผู้ใช้
@@ -48,12 +51,16 @@ contract Lottery {
     function count_buyers() view public returns (uint) {
         return buyer_result.length;
     }
-    function getDetailBuyerByAddress(address address1)  view public returns(Buyer memory){
-        return buyerStruct[address1];
+    function getDetailBuyerByAddress(address address1) view public returns(string memory, string memory,string memory,string[] memory){
+       // return buyerStruct[address1]; 
+       return  (buyerStruct[address1].firstName, buyerStruct[address1].lastName ,buyerStruct[address1].email  , buyerStruct[address1].myPeriod);
     }
-    function getMyDetailBuyer()  view public returns(Buyer memory){
-        return buyerStruct[msg.sender];
-    }
+    /*     
+        function getMyDetailBuyer()  view public returns(Buyer memory){
+            return buyerStruct[msg.sender];
+        }  
+    */
+
     modifier checkRegistor() {
        require(!checkStringEqualNull(buyerStruct[msg.sender].email), "Please register");
         _;
@@ -96,20 +103,26 @@ contract Lottery {
         string memory _address = concatenate(lotteryNo,period); /// PK
       
         //เช็คว่าเรานั้นยังสามารถซื้อไดเ้อยู่หรือไม่
-      
-      
-      
-      
+        if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length >= limit){
+            require(false ,"lottery limit"); 
+        }
+
         if(checkNumberAndGenerateLottery(lotteryNo,period)){   // กรณีที่ยังไมามีเลขนี้
     
             lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
             lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
-            buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
+            if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length==0){
+                buyerStruct[msg.sender].myPeriod.push(period);  
+            }
+            buyerStruct[msg.sender].stockListLotteryByPeriod[period].push(lotteryNo);
         }else{ // กรณีที่มีเลขนี้แล้ว
             if(lotteryStruct[ _address].amount>0){ //เช็คว่าเลขนี้ยังซื้อได้อยู่
                 lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
                 lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
-                buyerStruct[msg.sender].stockListLottery.push(_address); // คนซื้อเก็บว่าซื้ออะไรไปบ้าง 
+                if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length==0){
+                    buyerStruct[msg.sender].myPeriod.push(period);  
+                }
+                buyerStruct[msg.sender].stockListLotteryByPeriod[period].push(lotteryNo); 
             }else{ //เลขนี้หมดไปแล้ว
                 require(false ,"not buy"); 
             }
@@ -140,6 +153,8 @@ contract Lottery {
         }
         return true;
     }
+
+
 
 
 
