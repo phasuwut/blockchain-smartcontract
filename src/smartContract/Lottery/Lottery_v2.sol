@@ -9,7 +9,9 @@ pragma solidity >=0.7.0 <0.9.0;
 contract Lottery {
 
     /* 
-        // เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว
+        [] เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว
+        [] โอนเงินเมื่อถูกรางวัน
+        [] ออกเลข
     */
 
     uint256 private amountMax = 10; //จำนวนชุด
@@ -89,12 +91,13 @@ contract Lottery {
     function get_lottery_result() view public returns (string[] memory) {
         return lottery_result;
     }
-    function getDetailLotteryByIndex(string memory index1) public view returns(Lottery_ memory){
-        return lotteryStruct[index1];
-    }
     function count_lottery() view public returns (uint256) {
         return lottery_result.length;
     }
+    function getDetailLotteryByIndex(string memory index1) public view returns(Lottery_ memory){
+        return lotteryStruct[index1];
+    }
+
 
     function buyingLottery(string memory lotteryNo, string memory period) public checkRegistor(){
         /*         
@@ -148,6 +151,19 @@ contract Lottery {
             return false; 
         }
     }
+    //check ว่าเลขนี้มีอยู่หรือป่าว และยังซื้อได้อยู่หรือป่าว
+    function checkNumberAndBuy(string memory lotteryNo, string memory period) public view returns (bool){
+        if(checkNumber(lotteryNo,period)){
+            string memory _address = concatenate(lotteryNo,period);
+            if(lotteryStruct[_address].amount>0){
+                return true; 
+            }else{
+                return false; 
+            }
+        }else{
+            return false; 
+        }  
+    }
     //check ว่าเลขนี้มีอยู่หรือป่าว ถ้าไม่มีให้สร้างขึ้นมาใหม่ แต่ต้ามสร้างเกินเลขที่กำหนดไว่า
     function checkNumberAndGenerateLottery(string memory lotteryNo, string memory period) private returns (bool){
         if(checkNumber(lotteryNo,period)){
@@ -166,31 +182,23 @@ contract Lottery {
     function getMyaddress() view public returns(address){
         return msg.sender;
     }
+
+    // string1==""
     function checkStringEqualNull(string memory string1) private pure returns (bool){ // string1==""
         if(bytes(string1).length == 0){
             return true;
         }
         return false;
     }
-    function checkStringEqual(string memory string1, string memory string2) private pure returns (bool){ // string1== string2
+
+    // string1== string2
+    function checkStringEqual(string memory string1, string memory string2) private pure returns (bool){ 
         if( keccak256(abi.encodePacked(string1)) == keccak256(abi.encodePacked(string2)) ){
             return true;
         }
          return false;
     }
-    function st2num(string memory numString) private pure returns(uint) {
-        uint  val=0;
-        bytes   memory stringBytes = bytes(numString);
-        for (uint  i =  0; i<stringBytes.length; i++) {
-            uint exp = stringBytes.length - i;
-            bytes1 ival = stringBytes[i];
-            uint8 uval = uint8(ival);
-           uint jval = uval - uint(0x30);
-   
-           val +=  (uint(jval) * (10**(exp-1))); 
-        }
-      return val;
-    }
+
 
 
 }
