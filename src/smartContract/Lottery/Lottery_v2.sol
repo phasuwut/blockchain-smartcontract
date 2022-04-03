@@ -12,7 +12,25 @@ contract Lottery {
         [] เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว
         [] โอนเงินเมื่อถูกรางวัน
         [] ออกเลข
+        [X] listReward
     */
+
+
+    constructor() {
+        // กำหนดค่า
+        listReward.push(Reward(
+            {   
+                name:"reward-1",// "รางวันที่1",
+                price: 1000
+            }
+        ));
+        listReward.push(Reward(
+            {   
+                name:"reward-2",// "รางวันที่/",
+                price: 50
+            }
+        ));
+    }
 
     uint256 private amountMax = 10; //จำนวนชุด
     uint256 private limit=2; //ซื้อได้สูงสุด 4 ใบ
@@ -20,6 +38,17 @@ contract Lottery {
     /*     
         uint private pricex=80; //ราคาหวย
     */
+
+    // Reward
+    struct Reward{ // รางวัล
+        string name; //ชื่อรางวัน
+        uint price; ///เงินรางวัน
+    }
+    Reward[] private listReward; // เก็บว่ามีรางวันอะไรบ้าง
+    function getListReward() public view returns(Reward[] memory){
+        return listReward;
+    }
+
 
     //ข้อมูลผู้ใช้
     struct Buyer { 
@@ -75,7 +104,7 @@ contract Lottery {
     }
     mapping (string => Lottery_) private lotteryStruct;
     mapping (string => string[]) private listPeriod; // เก็บว่าแต่ละงวดมีเลขอะไรบ้าง
-    string[] private period_result;
+    string[] private period_result; // เก็บว่ามี period อะไรบ้าง
 
     // กำหนดค่าเริ่มต้น 
     function LotteryRegister(string memory lotteryNo, string memory period) private {
@@ -98,7 +127,6 @@ contract Lottery {
     function getPeriodResult(string memory string1) view public returns (string[] memory) {
         return listPeriod[string1];
     }
-
 
     function getDetailLotteryByIndex(string memory index1) public view returns(Lottery_ memory){
         return lotteryStruct[index1];
@@ -181,6 +209,9 @@ contract Lottery {
     }
  
     
+
+
+
     //////// functuion help
     function concatenate(string memory a,string memory b) internal pure returns (string memory){
         return string(abi.encodePacked(a,b));
