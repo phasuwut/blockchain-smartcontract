@@ -11,7 +11,7 @@ contract Lottery {
     /* 
         [] เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว
         [] โอนเงินเมื่อถูกรางวัน
-        [] ออกเลข
+        [X] ออกเลข
         [X] listReward
     */
 
@@ -32,9 +32,9 @@ contract Lottery {
         ));
     }
 
-    uint256 private amountMax = 10; //จำนวนชุด
+    uint256 private amountMax = 10; //ชุดละกี่ีใบ
     uint256 private limit=2; //ซื้อได้สูงสุด 4 ใบ
-    uint256 private LotteryMax=3; //จำนวนตัวเลขของหวย ต่อเลข
+    uint256 private LotteryMax=3; //จำนวนตัวเลขของหวย ต่อเลข => (3 ==> 000-999), (2 ==> 00- 99)
     /*     
         uint private pricex=80; //ราคาหวย
     */
@@ -48,6 +48,18 @@ contract Lottery {
     function getListReward() public view returns(Reward[] memory){
         return listReward;
     }
+    function awarding(string memory period) public view returns(string memory){
+        require(((bytes(period).length==8) ),"period Incorrect"); 
+        if(listPeriod[period].length==0){
+            require(false ,"period error"); 
+        }
+        uint random1 = random(listPeriod[period].length);
+
+        string memory _address = concatenate(period,listPeriod[period][random1]); 
+        return  _address;
+    }
+ 
+
 
 
     //ข้อมูลผู้ใช้
@@ -207,8 +219,8 @@ contract Lottery {
             return false;
         }
     }
- 
-    
+
+
 
 
 
@@ -236,6 +248,11 @@ contract Lottery {
          return false;
     }
 
+    // random number. 0-n
+    function random(uint number) private view returns(uint){
+        return uint(keccak256(abi.encodePacked(block.timestamp,block.difficulty,  
+        msg.sender))) % number;
+    }
 // function checkDate(string memory date)public view returns(bool){
 //     require false;
 // }
