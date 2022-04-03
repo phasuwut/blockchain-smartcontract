@@ -60,8 +60,6 @@ contract Lottery {
     }
 
 
-
-
     //  Lottery
     struct Lottery_ { // ข้อมูล
         string lotteryNo; // หมายเลขหวย
@@ -71,7 +69,6 @@ contract Lottery {
     }
     mapping (string => Lottery_) public lotteryStruct;
     string[] lottery_result;  //เก็บ address ข้อ Lottery
-
 
     // กำหนดค่าเริ่มต้น 
     function LotteryRegister(string memory lotteryNo, string memory period) private {
