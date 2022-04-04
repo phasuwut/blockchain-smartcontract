@@ -9,7 +9,7 @@ pragma solidity >=0.7.0 <0.9.0;
 contract Lottery {
 
     /* 
-        [] เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว
+        [*] เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว  Period =>  (YYYYMMDD)
         [] โอนเงินเมื่อถูกรางวัน
         [X] ออกเลข
         [X] listReward
@@ -161,9 +161,9 @@ contract Lottery {
 
         // มีเลขนี้อยู่ในระบบหรือไม่ ถ้าไม่มีให้สร้าง
         if(checkNumberAndGenerateLottery(lotteryNo,period)){  // กรณีที่มีเลขนี้แล้ว
-            if(lotteryStruct[ _address].amount>0){ //เช็คว่าเลขนี้ยังซื้อได้อยู่
-                lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
-                lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
+            if(lotteryStruct[_address].amount>0){ //เช็คว่าเลขนี้ยังซื้อได้อยู่
+                lotteryStruct[_address].amount = lotteryStruct[_address].amount-1;
+                lotteryStruct[_address].listAddress.push(msg.sender);  // address ของคนซื้อ 
                 if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length==0){
                     buyerStruct[msg.sender].myPeriod.push(period);  
                 }
@@ -173,8 +173,8 @@ contract Lottery {
             }
 
         }else{  // กรณีที่ยังไม่มีเลขนี้
-            lotteryStruct[ _address].amount = lotteryStruct[ _address].amount-1;
-            lotteryStruct[ _address].listAddress.push(msg.sender);  // address ของคนซื้อ 
+            lotteryStruct[_address].amount = lotteryStruct[_address].amount-1;
+            lotteryStruct[_address].listAddress.push(msg.sender);  // address ของคนซื้อ 
             if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length==0){
                 buyerStruct[msg.sender].myPeriod.push(period);  
             }
@@ -187,6 +187,10 @@ contract Lottery {
         require((!checkStringEqualNull(lotteryNo) && !checkStringEqualNull(period) ),"Incomplete information"); // ป้อนข้อมูลไม่ครบ
         require(((bytes(lotteryNo).length==LotteryMax) ),"lotteryNo Incorrect"); 
         require(((bytes(period).length==8) ),"period Incorrect"); 
+
+        require( IsNumber(lotteryNo),"lotteryNo Incorrect");  // check ว่าเป็นตัวเลขจริงหรือป่าว
+        require( IsNumber(period),"period Incorrect");  // check ว่าเป็นตัววันที่จริงหรือป่าว => 20220421 (YYYYMMDD)
+
 
         // เหลือพวก มันเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว
 
@@ -256,6 +260,52 @@ contract Lottery {
 // function checkDate(string memory date)public view returns(bool){
 //     require false;
 // }
+
+    function uintToString(uint v) private pure returns (string memory) {
+        uint maxlength = 100;
+        bytes memory reversed = new bytes(maxlength);
+        uint i = 0;
+        while (v != 0) {
+            uint remainder = v % 10;
+            v = v / 10;
+            reversed[i++] = bytes1(uint8(48 + remainder));
+        }
+        bytes memory s = new bytes(i); // i + 1 is inefficient
+        for (uint j = 0; j < i; j++) {
+            s[j] = reversed[i - j - 1]; // to avoid the off-by-one error
+        }
+        string memory str = string(s);  // memory isn't implicitly convertible to storage
+        return str;
+    }
+
+    function IsNumber(string memory str) private pure returns (bool){
+        bytes memory b = bytes(str);
+        if(b.length > 13) return false;
+
+        for(uint i; i<b.length; i++){
+            bytes1 char = b[i];
+
+            if(
+                !(char >= 0x30 && char <= 0x39)  //9-0
+            ){
+                return false;
+            }
+            /*         
+                    if(
+                        !(char >= 0x30 && char <= 0x39) && //9-0
+                        !(char >= 0x41 && char <= 0x5A) && //A-Z
+                        !(char >= 0x61 && char <= 0x7A) && //a-z
+                        !(char == 0x2E) //.
+                    ){
+                        return false;
+                    }
+            */ 
+        }
+
+        return true;
+    }
+
+
 
 }
 
