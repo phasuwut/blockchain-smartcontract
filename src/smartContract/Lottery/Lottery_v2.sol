@@ -103,7 +103,7 @@ contract Lottery {
         return  (buyerStruct[msg.sender].firstName, buyerStruct[msg.sender].lastName, buyerStruct[msg.sender].email, buyerStruct[msg.sender].myPeriod);
     } 
     function getMyLotteryByPeriod(string memory period) view public returns(string[] memory){
-        return  buyerStruct[msg.sender].stockListLotteryByPeriod[period];
+        return  buyerStruct[msg.sender].stockListLotteryByPeriod[period]; // ดูว่าเรานั้นซื้อเลขอะไรไปบ้าง
     }
 
 
@@ -133,15 +133,15 @@ contract Lottery {
         listPeriod[period].push(lotteryNo);
     }
 
-    function getPeriodResult() view public returns (string[] memory) {
-        return period_result;
+    function getPeriodResultAll() view public returns (string[] memory) {
+        return period_result;  //จะบอกว่า period อะไรบ้าง 
     }
-    function getPeriodResult(string memory string1) view public returns (string[] memory) {
-        return listPeriod[string1];
+    function getPeriodDetail(string memory string1) view public returns (string[] memory) {
+        return listPeriod[string1]; //จะบอกว่าแต่ละ period มีเลขอะไรบ้าง 
     }
-
-    function getDetailLotteryByIndex(string memory index1) public view returns(Lottery_ memory){
-        return lotteryStruct[index1];
+    function getLotteryDetailByAddress(string memory lotteryNo, string memory period) public view returns(Lottery_ memory){
+        string memory _address = concatenate(lotteryNo,period); /// PK
+        return lotteryStruct[_address]; 
     }
 
 
@@ -257,9 +257,7 @@ contract Lottery {
         return uint(keccak256(abi.encodePacked(block.timestamp,block.difficulty,  
         msg.sender))) % number;
     }
-// function checkDate(string memory date)public view returns(bool){
-//     require false;
-// }
+
 
     function uintToString(uint v) private pure returns (string memory) {
         uint maxlength = 100;
@@ -308,5 +306,4 @@ contract Lottery {
 
 
 }
-
 
