@@ -1,20 +1,25 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-
 /** 
  * @title Lottery
  * @dev Implements voting process along with vote delegation
  */
 contract Lottery {
-
     /* 
         [*] เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว  Period =>  (YYYYMMDD)
         [] โอนเงินเมื่อถูกรางวัน
         [X] ออกเลข
         [X] listReward
+        [] ซื้อตามจะนวนเงินที่ระบุ
     */
 
+    // กำหนดค่า
+    uint256 private amountMax = 10; //เลขนั้นมีกี่ีใบ 
+    uint256 private limit=2; //ซื้อได้สูงสุด 4 ใบ
+    uint256 private LotteryMax=1; //จำนวนตัวเลขของหวย ต่อเลข => (3 ==> 000-999), (2 ==> 00- 99)
+    uint private price=80 gwei; //ราคาหวย
+    address payable private walletLottery; // walletกลองกลาง
 
     constructor() {
         // กำหนดค่า
@@ -30,15 +35,10 @@ contract Lottery {
                 price: 50
             }
         ));
+
+        walletLottery = payable(msg.sender);
     }
 
-    uint256 private amountMax = 10; //ชุดละกี่ีใบ
-    uint256 private limit=2; //ซื้อได้สูงสุด 4 ใบ
-    uint256 private LotteryMax=1; //จำนวนตัวเลขของหวย ต่อเลข => (3 ==> 000-999), (2 ==> 00- 99)
-     
-    /*     
-        uint private pricex=80; //ราคาหวย
-    */
 
     // Reward
     struct Reward{ // รางวัล
@@ -61,9 +61,7 @@ contract Lottery {
     }
 
 
-
- 
-    //ข้อมูลผู้ใช้
+        //ข้อมูลผู้ใช้
     struct Buyer { 
         string firstName;
         string lastName;
@@ -103,14 +101,16 @@ contract Lottery {
     function getMyDetailBuyer() view public returns(string memory, string memory,string memory,string[] memory){
         return  (buyerStruct[msg.sender].firstName, buyerStruct[msg.sender].lastName, buyerStruct[msg.sender].email, buyerStruct[msg.sender].myPeriod);
     } 
+    // ดูว่าแต่ละPeriod เรานั้นซื้อเลขอะไรไปบ้าง
     function getMyLotteryByPeriod(string memory period) view public returns(string[] memory){
-        return  buyerStruct[msg.sender].stockListLotteryByPeriod[period]; // ดูว่าเรานั้นซื้อเลขอะไรไปบ้าง
+        return  buyerStruct[msg.sender].stockListLotteryByPeriod[period];
     } 
 
 
 
+
     //  Lottery
-    struct Lottery_ { // ข้อมูล
+    struct Lottery_ { 
         string lotteryNo; // หมายเลขหวย
         string period; // ช่วงวันที่ 
         uint256 amount;
@@ -124,7 +124,7 @@ contract Lottery {
     function generateLottery(string memory period) public {
         require(((bytes(period).length==8) ),"period Incorrect"); 
 
-        if(listPeriod[period].length==0){
+        if(listPeriod[period].length==0){ // period นี้ถูก generate ไปแล้วหรือยัง
             period_result.push(period); // เก็บว่ามี period อะไรบ้าง
             for(uint i=0;i<mathPow(LotteryMax);i++){
                 string memory lotteryNo = i==0 ? "0": uintToString(i);    // fubction ที่แปลง uint to string มันมีปัญหาตจรงเลข 0
@@ -150,7 +150,7 @@ contract Lottery {
     }
 
 
-    function buyingLottery(string memory lotteryNo, string memory period) public checkRegistor(){
+    function buyingLottery(string memory lotteryNo, string memory period) public payable checkRegistor(){
         /*         
             // พวกการเช็คค่าต่างๆ ยังไม่ได้ทำ
             [*] ซื้อเกินlimit ต่อ period หรือไม่ 
@@ -168,12 +168,19 @@ contract Lottery {
 
         //เช็คว่าเลขนี้ยังซื้อได้อยู่
         if(lotteryStruct[_address].amount>0){ //ยังมีเหลือ
+            
+            require(msg.value == price , "You must pay at least 80 gwei  ");
+
+
             lotteryStruct[_address].amount = lotteryStruct[_address].amount-1;
             lotteryStruct[_address].listAddress.push(msg.sender);  // address ของคนซื้อ 
             if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length==0){
                 buyerStruct[msg.sender].myPeriod.push(period);  
             }
             buyerStruct[msg.sender].stockListLotteryByPeriod[period].push(lotteryNo); 
+            walletLottery.transfer(msg.value); // โอนเงินที่ซื้อเข้ากลองกลาง
+
+
         }else{ //เลขนี้หมดไปแล้ว
             require(false ,"not buy"); 
         }
@@ -211,14 +218,15 @@ contract Lottery {
 
 
 
-
-
     //////// functuion help
     function concatenate(string memory a,string memory b) internal pure returns (string memory){
         return string(abi.encodePacked(a,b));
     } 
-    function getMyaddress() view public returns(address){
+    function getMyaddress() public view returns(address){
         return msg.sender;
+    }
+    function getMyBalance() public view returns(uint) {
+        return msg.sender.balance; 
     }
 
     // string1==""
@@ -228,7 +236,6 @@ contract Lottery {
         }
         return false;
     }
-
     // string1== string2
     function checkStringEqual(string memory string1, string memory string2) private pure returns (bool){ 
         if( keccak256(abi.encodePacked(string1)) == keccak256(abi.encodePacked(string2)) ){
@@ -236,7 +243,6 @@ contract Lottery {
         }
          return false;
     }
-
     // random number. 0-n
     function random(uint number) private view returns(uint){
         return uint(keccak256(abi.encodePacked(block.timestamp,block.difficulty,  
@@ -291,6 +297,4 @@ contract Lottery {
     }
 
 
-
 }
-
