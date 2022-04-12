@@ -313,19 +313,21 @@ contract Lottery {
         Award[period].listAddress= lotteryStruct[randomLotteryNo[random1]].listAddress;
         Award[period].lotteryStruct=randomLotteryNo[random1];
 
-    //   for(uint i=0;i<lotteryStruct[randomLotteryNo[random1]].listAddress.length;i++){
-    //        for(uint k=0; k< walletCommonMoney[period].length; k++){
-    //            if(lotteryStruct[randomLotteryNo[random1]].listAddress[i] == walletCommonMoney[period][k]){
-    //                 address payable winner;
-    //                 winner=walletCommonMoney[period][k];
-    //                 winner.transfer(BalancePerAddress);
-    //            }
-    //        }
-    //     }   
+        for(uint i=0;i<lotteryStruct[randomLotteryNo[random1]].listAddress.length;i++){
+           for(uint k=0; k< walletCommonMoney[period].length; k++){
+               if(lotteryStruct[randomLotteryNo[random1]].listAddress[i] == walletCommonMoney[period][k]){
+                    address payable winner;
+                    winner=walletCommonMoney[period][k];
+                    winner.transfer(BalancePerAddress);
+                    k=walletCommonMoney[period].length+1;
+               }
+           }
+        }   
 
-    //     walletCommonMoney[ period] = new address payable[](0);
-    //     commonMoney[period]=0;
-       // return (lotteryStruct[randomLotteryNo[random1]].listAddress, randomLotteryNo[random1], Balance, BalancePerAddress); 
+        walletCommonMoney[ period] = new address payable[](0);
+        commonMoney[period]=0;
+
+
 
 
 
