@@ -8,7 +8,7 @@ pragma solidity >=0.7.0 <0.9.0;
 contract Lottery {
     /* 
         [*] เหลือพวกเช็คว่าเป็นวันที่จริงหรือป่าว ตัวเลขจริงหรือป่าว  Period =>  (YYYYMMDD)
-        [] โอนเงินเมื่อถูกรางวัน
+        [X] โอนเงินเมื่อถูกรางวัน
         [X] ออกเลข
         [X] listReward
         [X] ซื้อตามจะนวนเงินที่ระบุ
@@ -19,51 +19,14 @@ contract Lottery {
     uint256 private limit=2; //ซื้อได้สูงสุด 4 ใบ
     uint256 private LotteryMax=1; //จำนวนตัวเลขของหวย ต่อเลข => (3 ==> 000-999), (2 ==> 00- 99)
     uint private price=80 gwei; //ราคาหวย
-    //address payable private walletLottery; // walletกลองกลาง
     address public manager;
 
     constructor() {
         // กำหนดค่า
-        listReward.push(Reward(
-            {   
-                name:"reward-1",// "รางวันที่1",
-                price: 1000
-            }
-        ));
-        listReward.push(Reward(
-            {   
-                name:"reward-2",// "รางวันที่/",
-                price: 50
-            }
-        ));
         manager = msg.sender;
-        //walletLottery = payable(msg.sender);
     }
 
-
-
-    // Reward
-    struct Reward{ // รางวัล
-        string name; //ชื่อรางวัน
-        uint price; ///เงินรางวัน
-    }
-    Reward[] private listReward; // เก็บว่ามีรางวันอะไรบ้าง
-    function getListReward() public view returns(Reward[] memory){
-        return listReward;
-    }
-    function awarding(string memory period) public view returns(string memory){
-        require(((bytes(period).length==8) ),"period Incorrect"); 
-        if(listPeriod[period].length==0){
-            require(false ,"period error"); 
-        }
-        uint random1 = random(listPeriod[period].length);
-
-        string memory _address = concatenate(period,listPeriod[period][random1]); 
-        return  _address;
-    }
-
-
-        //ข้อมูลผู้ใช้
+    //ข้อมูลผู้ใช้
     struct Buyer { 
         string firstName;
         string lastName;
@@ -72,7 +35,7 @@ contract Lottery {
         string [] myPeriod; //เก็บว่าเราน้ันซื้อ Period ไหนไปบ้าง
     }
     mapping (address => Buyer) private buyerStruct;
-    address[] buyer_result;  // เก็บ address ข้อมูลผู้ใช้ทั้งหมด
+    address[] private buyer_result;  // เก็บ address ข้อมูลผู้ใช้ทั้งหมด
 
     function buyersRegister(string memory firstName, string memory lastName,string memory email) public {
         // firstName, lastName, email ต้องไม่เป็นค่าว่าง
@@ -110,17 +73,6 @@ contract Lottery {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     //  Lottery
     struct Lottery_ { 
         string lotteryNo; // หมายเลขหวย
@@ -131,11 +83,12 @@ contract Lottery {
     mapping (string => Lottery_) private lotteryStruct;
     mapping (string => string[]) private listPeriod; // เก็บว่าแต่ละ period มีเลขอะไรบ้าง
     string[] private period_result; // เก็บว่ามี period อะไรบ้าง
-    mapping (string => address payable[]) private walletCommonMoney;//  walletกลองกลางของแต่ละงวด
-    mapping (string => uint)private commonMoney; // จำนวนเงินกลองกลางของแต่ละงวด
+    mapping (string => address payable[]) private walletCommonMoney; //  walletกลองกลางของแต่ละงวด
+    mapping (string => uint) private commonMoney; // จำนวนเงินกลองกลางของแต่ละงวด
 
     // กำหนดค่าเริ่มต้น 
     function generateLottery(string memory period) public {
+        require(msg.sender == manager,"only meneger");
         require(((bytes(period).length==8) ),"period Incorrect"); 
 
         if(listPeriod[period].length==0){ // period นี้ถูก generate ไปแล้วหรือยัง
@@ -171,10 +124,12 @@ contract Lottery {
             [*] มีเลขนี้อยู่ในระบบหรือไม่ ถ้าไม่มีให้สร้าง
             [*] จำนวน amountของเลขนั้นมันเกินหรือไม่ (เลขนี้หมดไปแล้ว)
         */
+
+        require( !Award[period].isAwarding ,"buyingLottery fifhisded"); // งวดนี้ปิดการขายไปแล้ว
+        require(checkNumber(lotteryNo,period) ,"lotteryNo not found"); // check ว่าเลขนี้มีอยู่หรือป่าว
         string memory _address = concatenate(lotteryNo,period); /// PK
       
-        require(checkNumber(lotteryNo,period) ,"lotteryNo not found"); // check ว่าเลขนี้มีอยู่หรือป่าว
-        
+      
         //ซื้อเกินlimit ต่อ period หรือไม่ 
         if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length >= limit){
             require(false ,"lottery limit"); 
@@ -192,9 +147,10 @@ contract Lottery {
                 buyerStruct[msg.sender].myPeriod.push(period);  
             }
             buyerStruct[msg.sender].stockListLotteryByPeriod[period].push(lotteryNo); 
-            //walletLottery.transfer(msg.value); // โอนเงินที่ซื้อเข้ากลองกลาง
-            walletCommonMoney[period].push(payable(msg.sender));
-            commonMoney[period]=commonMoney[period]+msg.value;
+            
+            // โอนเข้ากลองกลาง
+            walletCommonMoney[period].push(payable(msg.sender)); //โอนเงินเข้ากลองกลาง
+            commonMoney[period]=commonMoney[period]+msg.value;  // บันทึกว่ากลองกลางมีเงินจำนวนเท่าไหร่
 
         }else{ //เลขนี้หมดไปแล้ว
             require(false ,"not buy"); 
@@ -233,8 +189,6 @@ contract Lottery {
 
 
     // ออก รางวัล
-
-
     struct award { 
         uint Balance;   // จำนวนเงินทั้งหมด
         uint BalancePerAddress;     // จำนวนเงินทั้งหมด มาหาร จำนวน address => ก็จะได้เป็นว่า address จะได้เงินจำนวนเท่าไหร่
@@ -242,36 +196,14 @@ contract Lottery {
         string lotteryStruct; // เลขที่ออก
         address [] listAddress;// address ของผู้ที่เคยถูกรางวัล
     }
-    mapping (string => award) private Award;
-
+    mapping (string => award) private Award;//เอาไว้ของว่างวดนี้ออก เลขอะไร ใครได้บ้าง เงินเท่าไหร่
+    //  เงินกลองกลางของแต่าละงวด
     function getBalance(string memory period) public view returns(uint) {
         return commonMoney[period];
     }
-    function random2(string memory period) private view returns(uint) {
-        return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, walletCommonMoney[period].length)));
-    }
-    function pickWinner(string memory period) public { // โอนเงินเมื่อถูกรางวัล
+    // ออกสลาก
+    function awarding(string memory period) public{
         require(msg.sender == manager,"only meneger");
-        require(((bytes(period).length==8) ),"period Incorrect"); 
-        require((getPeriodDetail(period).length!=0 ),"period not found"); 
-
-        uint r = random2(period);
-        address payable winner;
-        uint index = r % walletCommonMoney[period].length;
-        winner = walletCommonMoney[ period][index];
-        winner.transfer(getBalance(period)/2);
-
-        uint r2 = random2(period);
-        address payable winner2;
-        uint index2 = r2 % walletCommonMoney[period].length;
-        winner2 = walletCommonMoney[ period][index2];
-        winner2.transfer(getBalance(period)/2);
-
-        walletCommonMoney[ period] = new address payable[](0);
-        commonMoney[period]=0;
-    }
-
-    function awarding2(string memory period) public{
         require(((bytes(period).length==8) ),"period Incorrect"); 
         if(listPeriod[period].length==0){
             require(false ,"period error"); 
@@ -280,7 +212,7 @@ contract Lottery {
         
 
         
-        // เอาเแพาะเลขที่ขายไปแล้วมา random  
+        // เอาเฉพาะเลขที่ขายไปแล้วมา random  
         // https://stackoverflow.com/questions/69038767/solidity-returnsstring-memory-wont-permit-return-of-string5
         uint num=0;
         for(uint i=0;i<listPeriod[period].length;i++){
@@ -302,6 +234,7 @@ contract Lottery {
             }  
         }
         
+
         
      
         uint random1 = random(num);
@@ -310,28 +243,23 @@ contract Lottery {
         Award[period].isAwarding=true;
         Award[period].Balance=Balance;
         Award[period].BalancePerAddress=BalancePerAddress;
-        Award[period].listAddress= lotteryStruct[randomLotteryNo[random1]].listAddress;
-        Award[period].lotteryStruct=randomLotteryNo[random1];
+        Award[period].listAddress= lotteryStruct[randomLotteryNo[random1]].listAddress;  // address ของคนที่ถูกรางวัล
+        Award[period].lotteryStruct=randomLotteryNo[random1]; // เลยขไหน งวดไหน
 
+        // ทำการโอนเงิน
         for(uint i=0;i<lotteryStruct[randomLotteryNo[random1]].listAddress.length;i++){
            for(uint k=0; k< walletCommonMoney[period].length; k++){
                if(lotteryStruct[randomLotteryNo[random1]].listAddress[i] == walletCommonMoney[period][k]){
                     address payable winner;
                     winner=walletCommonMoney[period][k];
-                    winner.transfer(BalancePerAddress);
-                    k=walletCommonMoney[period].length+1;
+                    winner.transfer(BalancePerAddress); // โอนเงิน
+                    k=walletCommonMoney[period].length+1; 
                }
            }
         }   
 
         walletCommonMoney[ period] = new address payable[](0);
         commonMoney[period]=0;
-
-
-
-
-
-
 
     }
      function getAward(string memory period) view public returns (award memory){
@@ -422,3 +350,61 @@ contract Lottery {
 
 
 }
+
+
+/* 
+
+
+    constructor() {
+        // กำหนดค่า
+        listReward.push(Reward(
+            {   
+                name:"reward-1",// "รางวันที่1",
+                price: 1000
+            }
+        ));
+        listReward.push(Reward(
+            {   
+                name:"reward-2",// "รางวันที่/",
+                price: 50
+            }
+        ));
+        manager = msg.sender;
+        //walletLottery = payable(msg.sender);
+    }
+
+
+    // Reward
+    struct Reward{ // รางวัล
+        string name; //ชื่อรางวัน
+        uint price; ///เงินรางวัน
+    }
+    Reward[] private listReward; // เก็บว่ามีรางวันอะไรบ้าง
+    function getListReward() public view returns(Reward[] memory){
+        return listReward;
+    }
+    function random2(string memory period) private view returns(uint) {
+        return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, walletCommonMoney[period].length)));
+    }
+    function pickWinner(string memory period) public { // โอนเงินเมื่อถูกรางวัล
+        require(msg.sender == manager,"only meneger");
+        require(((bytes(period).length==8) ),"period Incorrect"); 
+        require((getPeriodDetail(period).length!=0 ),"period not found"); 
+
+        uint r = random2(period);
+        address payable winner;
+        uint index = r % walletCommonMoney[period].length;
+        winner = walletCommonMoney[ period][index];
+        winner.transfer(getBalance(period)/2);
+
+        uint r2 = random2(period);
+        address payable winner2;
+        uint index2 = r2 % walletCommonMoney[period].length;
+        winner2 = walletCommonMoney[ period][index2];
+        winner2.transfer(getBalance(period)/2);
+
+        walletCommonMoney[ period] = new address payable[](0);
+        commonMoney[period]=0;
+    }
+
+ */
