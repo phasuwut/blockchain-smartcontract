@@ -36,7 +36,8 @@ contract Lottery {
     }
     mapping (address => Buyer) private buyerStruct;
     address[] private buyer_result;  // เก็บ address ข้อมูลผู้ใช้ทั้งหมด
-
+    // log
+    event BuyerRegister(string firstName, string lastName, string email, address indexed BuyerAddress);
     function buyersRegister(string memory firstName, string memory lastName,string memory email) public {
         // firstName, lastName, email ต้องไม่เป็นค่าว่าง
         require((!checkStringEqualNull(firstName) && !checkStringEqualNull(lastName) && !checkStringEqualNull(email)),"Incomplete information"); // ป้อนข้อมูลไม่ครบ
@@ -47,8 +48,9 @@ contract Lottery {
         buyerStruct[msg.sender].firstName = firstName;
         buyerStruct[msg.sender].lastName = lastName;
         buyerStruct[msg.sender].email = email;
-
+        emit BuyerRegister(firstName,lastName, email,msg.sender); // save log
         buyer_result.push(msg.sender);
+
     }
     modifier checkRegistor() {
        require(!checkStringEqualNull(buyerStruct[msg.sender].email), "Please register");
@@ -116,7 +118,8 @@ contract Lottery {
         return lotteryStruct[_address]; 
     }
 
-
+    // log
+    event BuyingLottery(uint Amount, string Address, string Period, string Number, uint Money); // amount ,  Addressของคนซื้อ, Period, number, Money
     function buyingLottery(string memory lotteryNo, string memory period) public payable checkRegistor(){
         /*         
             // พวกการเช็คค่าต่างๆ ยังไม่ได้ทำ
@@ -128,7 +131,6 @@ contract Lottery {
         require( !Award[period].isAwarding ,"buyingLottery fifhisded"); // งวดนี้ปิดการขายไปแล้ว
         require(checkNumber(lotteryNo,period) ,"lotteryNo not found"); // check ว่าเลขนี้มีอยู่หรือป่าว
         string memory _address = concatenate(lotteryNo,period); /// PK
-      
       
         //ซื้อเกินlimit ต่อ period หรือไม่ 
         if(buyerStruct[msg.sender].stockListLotteryByPeriod[period].length >= limit){
@@ -151,6 +153,9 @@ contract Lottery {
             // โอนเข้ากลองกลาง
             walletCommonMoney[period].push(payable(msg.sender)); //โอนเงินเข้ากลองกลาง
             commonMoney[period]=commonMoney[period]+msg.value;  // บันทึกว่ากลองกลางมีเงินจำนวนเท่าไหร่
+
+            // save log
+            emit BuyingLottery(1, _address, period, lotteryNo, msg.value);
 
         }else{ //เลขนี้หมดไปแล้ว
             require(false ,"not buy"); 
@@ -197,6 +202,8 @@ contract Lottery {
         address [] listAddress;// address ของผู้ที่เคยถูกรางวัล
     }
     mapping (string => award) private Award;//เอาไว้ของว่างวดนี้ออก เลขอะไร ใครได้บ้าง เงินเท่าไหร่
+    // log
+    event Awarding(uint Balance,  uint BalancePerAddress, string lotteryStruct , address [] listAddress);
     //  เงินกลองกลางของแต่าละงวด
     function getBalance(string memory period) public view returns(uint) {
         return commonMoney[period];
@@ -209,8 +216,6 @@ contract Lottery {
             require(false ,"period error"); 
         }
         require(!Award[period].isAwarding ,"Awarded"); // ออกรางวัลไปแล้ว
-        
-
         
         // เอาเฉพาะเลขที่ขายไปแล้วมา random  
         // https://stackoverflow.com/questions/69038767/solidity-returnsstring-memory-wont-permit-return-of-string5
@@ -260,6 +265,9 @@ contract Lottery {
 
         walletCommonMoney[ period] = new address payable[](0);
         commonMoney[period]=0;
+
+        //save log  
+        emit Awarding(Balance,  BalancePerAddress, randomLotteryNo[random1], lotteryStruct[randomLotteryNo[random1]].listAddress);
 
     }
      function getAward(string memory period) view public returns (award memory){
@@ -353,8 +361,6 @@ contract Lottery {
 
 
 /* 
-
-
     constructor() {
         // กำหนดค่า
         listReward.push(Reward(
@@ -372,8 +378,6 @@ contract Lottery {
         manager = msg.sender;
         //walletLottery = payable(msg.sender);
     }
-
-
     // Reward
     struct Reward{ // รางวัล
         string name; //ชื่อรางวัน
@@ -390,21 +394,17 @@ contract Lottery {
         require(msg.sender == manager,"only meneger");
         require(((bytes(period).length==8) ),"period Incorrect"); 
         require((getPeriodDetail(period).length!=0 ),"period not found"); 
-
         uint r = random2(period);
         address payable winner;
         uint index = r % walletCommonMoney[period].length;
         winner = walletCommonMoney[ period][index];
         winner.transfer(getBalance(period)/2);
-
         uint r2 = random2(period);
         address payable winner2;
         uint index2 = r2 % walletCommonMoney[period].length;
         winner2 = walletCommonMoney[ period][index2];
         winner2.transfer(getBalance(period)/2);
-
         walletCommonMoney[ period] = new address payable[](0);
         commonMoney[period]=0;
     }
-
  */
