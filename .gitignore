@@ -25,7 +25,7 @@ yarn-error.log*
 package-lock.json
 
 node_modules
-.env
+
 coverage
 coverage.json
 typechain
@@ -45,7 +45,7 @@ cache
 artifacts
 
 node_modules
-.env
+
 coverage
 coverage.json
 typechain
