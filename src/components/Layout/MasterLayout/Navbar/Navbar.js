@@ -51,7 +51,7 @@ const MasterLayoutNavbar = () => {
 					<Nav.Link href="history">history</Nav.Link>
 					<NavDropdown title="Smart Contract" id="basic-nav-dropdown">
 						<NavDropdown.Item href="smart-contract/test1">SmartContractTest1</NavDropdown.Item>
-						<NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+						<NavDropdown.Item href="lottery">Lottery</NavDropdown.Item>
 						<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
 						<NavDropdown.Divider />
 						<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
