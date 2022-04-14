@@ -20,7 +20,7 @@ const ContactUs = () => {
 
 	return (
 		<MasterLayout>
-			<div>Home</div>
+	
 			{manager}
 		</MasterLayout>
 	);

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import Check from "./components/Pages/Check/Check";
 import ContactUs  from "./components/Pages/ContactUs/ContactUs";
 import HistoryPage from "./components/Pages/History/History";
 import HomePage from "./components/Pages/Home/Home";
@@ -17,6 +18,8 @@ function App() {
 					<Route path="history" element={<HistoryPage />} />
 					<Route path="smart-contract/test1" element={<SmartContractTest1 />} />
 					<Route path="contact-us" element={<ContactUs  />} />
+					<Route path="Check" element={<Check />} />
+					
 					<Route path="*" element={<Page404Page />} />
 				</Route>
 			</Routes>

@@ -56,6 +56,9 @@ const MasterLayoutNavbar = () => {
 					<NavDropdown title="Lottery" id="basic-nav-dropdown">
 						<NavDropdown.Item href="contact-us">Contact-us</NavDropdown.Item>
 					</NavDropdown>
+					<NavDropdown title="Tools" id="basic-nav-dropdown">
+						<NavDropdown.Item href="check">Check All</NavDropdown.Item>
+					</NavDropdown>
 				</Nav>
 				<Form inline>
 					<Button variant="outline-success" onClick={connectWalletPressed}>

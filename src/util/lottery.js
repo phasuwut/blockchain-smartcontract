@@ -11,3 +11,26 @@ export const lotteryManeger = async () => {
 	const message = await lotteryContract.methods.manager().call();
 	return message;
 };
+
+
+export const getMyaddress = async () => {
+	const message = await lotteryContract.methods.getMyaddress().call();
+	return message;
+};
+export const getMyBalance = async () => {
+	const message = await lotteryContract.methods.getMyBalance().call();
+	return message;
+};
+export const getPeriodAll = async () => {
+	const message = await lotteryContract.methods.getPeriodAll().call();
+	console.log(message )
+	return message;
+};
+
+
+
+
+
+
+
+
