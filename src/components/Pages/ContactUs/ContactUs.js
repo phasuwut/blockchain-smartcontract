@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import MasterLayout from "../../../../../Layout/MasterLayout/MasterLayout";
-import { lotteryManeger } from "../../util/interact";
+import MasterLayout from "../../Layout/MasterLayout/MasterLayout";
+import { lotteryManeger } from "../../../util/lottery";
 
-const Home = () => {
+const ContactUs = () => {
 	console.log(lotteryManeger);
 
 	const [manager, setManeger] = useState("");
@@ -20,11 +20,10 @@ const Home = () => {
 
 	return (
 		<MasterLayout>
-			<h1> Maneger</h1>
 			<div>Home</div>
 			{manager}
 		</MasterLayout>
 	);
-};
+}
 
-export default Home;
+export default ContactUs
