@@ -33,9 +33,12 @@ const MasterLayoutNavbar = () => {
 	useEffect(async () => {
 		if (walletAddress !== "") {
 			const money = await getUserBalance(walletAddress);
-			dispatch(setWalletStore({ ...walletStore.wallet, money: money }));
+			dispatch(setWalletStore({ ...walletStore.wallet, money:money }));
 		}
 	}, [walletAddress]);
+
+
+
 
 	return (
 		<Navbar bg="light" expand="lg">
@@ -48,18 +51,10 @@ const MasterLayoutNavbar = () => {
 					<Nav.Link href="history">history</Nav.Link>
 					<NavDropdown title="Smart Contract" id="basic-nav-dropdown">
 						<NavDropdown.Item href="smart-contract/test1">SmartContractTest1</NavDropdown.Item>
-						<NavDropdown.Item href="contact-us">Contact-us</NavDropdown.Item>
+						<NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
 						<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
 						<NavDropdown.Divider />
 						<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-					</NavDropdown>
-					<NavDropdown title="Lottery" id="basic-nav-dropdown">
-						<NavDropdown.Item href="contact-us">Contact-us</NavDropdown.Item>
-					</NavDropdown>
-					<NavDropdown title="Tools" id="basic-nav-dropdown">
-						<NavDropdown.Item href="check">Check All</NavDropdown.Item>
-						<NavDropdown.Item href="back-office">BackOffice</NavDropdown.Item>
-						<NavDropdown.Item href="my-detail">MyDetail</NavDropdown.Item>
 					</NavDropdown>
 				</Nav>
 				<Form inline>
