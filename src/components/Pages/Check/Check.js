@@ -52,6 +52,8 @@ const Check = () => {
 		fetchMessage();
 	}, []);
 
+	
+
 	return (
 		<MasterLayout>
 			<div>

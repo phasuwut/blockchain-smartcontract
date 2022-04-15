@@ -118,9 +118,51 @@ export const getPeriodDetail = async (Period) => {
 	return message;
 };
 export const getLotteryDetailByAddress = async (lotteryNo, Period) => {
-
 	const message = await lotteryContract.methods.getLotteryDetailByAddress(lotteryNo, Period).call();
 	return message;
+};
+export const buyingLottery = async (myAddress, lotteryNo, Period) => {
+	//input error handling
+	if (!window.ethereum || myAddress === null) {
+		return {
+			status: "💡 Connect your Metamask wallet to update the message on the blockchain.",
+		};
+	}
+	const wei = web3.utils.toWei("0.00000008", 'ether')
+	//set up transaction parameters
+	const transactionParameters = {
+		to: contractAddress, // Required except during contract publications.
+		from: myAddress, // must match user's active address.
+		data: lotteryContract.methods.buyingLottery(lotteryNo, Period).encodeABI(),
+		value: web3.utils.toHex(wei),
+	};
+
+	//sign the transaction
+	try {
+		const txHash = await window.ethereum.request({
+			method: "eth_sendTransaction",
+			params: [transactionParameters],
+		});
+
+		return {
+			status: (
+				<span>
+					✅{" "}
+					<a target="_blank" href={`https://ropsten.etherscan.io/tx/${txHash}`}>
+						View the status of your transaction on Etherscan!
+					</a>
+					<br />
+					ℹ️ Once the transaction is verified by the network, the message will be updated
+					automatically.
+				</span>
+			),
+		};
+	} catch (error) {
+		return {
+			status: "😥 " + error.message,
+		};
+	}
+
 };
 
 // bug
