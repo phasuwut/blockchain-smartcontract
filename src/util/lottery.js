@@ -44,7 +44,7 @@ export const buyersRegister = async (myAddress, firstName, lastName, email) => {
 			method: "eth_sendTransaction",
 			params: [transactionParameters],
 		});
-		
+
 		return {
 			status: (
 				<span>
@@ -106,6 +106,20 @@ export const generateLottery = async (myAddress, Period) => {
 };
 export const isRegistor = async (myAddress) => {
 	const message = await lotteryContract.methods.isRegistor().call({ from: myAddress });
+	return message;
+};
+export const getMyDetailBuyer = async (myAddress) => {
+	const message = await lotteryContract.methods.getMyDetailBuyer().call({ from: myAddress });
+	return message;
+};
+export const getPeriodDetail = async (Period) => {
+	// จะบอกว่าแต่ละ period มีเลขอะไรบ้าง
+	const message = await lotteryContract.methods.getPeriodDetail(Period).call();
+	return message;
+};
+export const getLotteryDetailByAddress = async (lotteryNo, Period) => {
+
+	const message = await lotteryContract.methods.getLotteryDetailByAddress(lotteryNo, Period).call();
 	return message;
 };
 

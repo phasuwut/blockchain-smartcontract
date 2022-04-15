@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-	buyersRegister,
 	getBuyerResult,
 	getMyBalance,
 	getMyaddress,
@@ -15,7 +14,7 @@ import Register from "../../Gobal/Register/Register"
 const Check = () => {
 	const [myAddress, setMyaddress] = useState("");
 	const [myBalance, setMyBalance] = useState("");
-	const [periodAll, setPeriodAll] = useState("");
+	const [periodAll, setPeriodAll] = useState([]);
 	const [listBuyer, setListBuyer] = useState([]);
 	const [isShowRegistor, setIsShowRegistor] = useState(true);
 	
@@ -31,6 +30,10 @@ const Check = () => {
 				console.log(res);
 				setListBuyer(res);
 			});
+			getPeriodAll().then((res)=>{
+				console.log(res)
+				setPeriodAll(res)
+			})
 
 			// getMyAddress
 			ethereum.request({ method: "eth_accounts" }).then((res) => {
@@ -65,9 +68,9 @@ const Check = () => {
 					})}
 				</div>
 				<hr />
-				<Register myAddress={myAddress}/>
+			
 				{
-					isShowRegistor?(<Register/>):null
+					isShowRegistor?(	<Register myAddress={myAddress}/>):null
 				}
 			
 			</div>
