@@ -2,8 +2,8 @@ async function main() {
     const Lottery = await ethers.getContractFactory("Lottery");
  
     // Start deployment, returning a promise that resolves to a contract object
-    const lottery = await Lottery.deploy();   
-    console.log("Contract deployed to address:", lottery.address);
+    const lottery_deploy = await Lottery.deploy();   
+    console.log("Contract deployed to address:", lottery_deploy.address);
  }
  
  main()

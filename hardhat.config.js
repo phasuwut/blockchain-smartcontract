@@ -19,10 +19,10 @@ module.exports = {
          url: API_URL,
          accounts: [`0x${PRIVATE_KEY}`]
       }
-   },
+   }/* ,
    etherscan: {
-      // Your API key for Etherscan
-      // Obtain one at https://etherscan.io/
-      apiKey: ETHERSCAN_API_KEY
-    }
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey: ETHERSCAN_API_KEY
+  } */
 }

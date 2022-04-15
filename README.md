@@ -14,20 +14,6 @@ node scripts/sample-script.js
 npx hardhat help
 ```
 
-ใช้ account 0x7B8aE3C8C0F2d663F64cD37DE7b7084fDea23075
-Contract deployed to address: 0xD938e15C48c0408eC658726ef3D30d0Af11789CB
 
-
-npx hardhat verify --network ropsten 0xD938e15C48c0408eC658726ef3D30d0Af11789CB 
-
-<!-- 
-(base) phasuwut@Phasuwuts-MacBook-Pro-2 blockchain-smartcontract % npx hardhat verify --network ropsten 0xD938e15C48c0408eC658726ef3D30d0Af11789CB 
-Nothing to compile
-Successfully submitted source code for contract
-contracts/Lottery.sol:Lottery at 0xD938e15C48c0408eC658726ef3D30d0Af11789CB
-for verification on the block explorer. Waiting for verification result...
-
-Successfully verified contract Lottery on Etherscan.
-https://ropsten.etherscan.io/address/0xD938e15C48c0408eC658726ef3D30d0Af11789CB#code
- -->
-
+Contract deployed to address: 0x4Fb93499C5814aa822BD92BaEc3a9ca8F00cCAA6
+npx hardhat verify --network ropsten 0x4Fb93499C5814aa822BD92BaEc3a9ca8F00cCAA6 

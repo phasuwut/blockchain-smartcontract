@@ -15,14 +15,14 @@ const alchemyProvider = new ethers.providers.AlchemyProvider(
 const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
 
 // Contract
-const helloWorldContract = new ethers.Contract(
+const lotteryContract = new ethers.Contract(
   CONTRACT_ADDRESS,
   contract.abi,
   signer
 );
 
 async function main() {
-  const message = await helloWorldContract.manager();
+  const message = await lotteryContract.manager();
   console.log("The message is: " + message);
 }
 main();

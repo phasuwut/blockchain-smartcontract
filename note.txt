@@ -1,0 +1,16 @@
+npm init --yes
+npm install --save-dev hardhat
+npx hardhat
+mkdir contracts
+mkdir scripts
+    ---- creact file.sol
+npm install dotenv --save
+     ---- creact file .env
+npm install --save-dev @nomiclabs/hardhat-ethers "ethers@^5.0.0"
+    !!!! edid file hardhat.config.js
+npx hardhat compile       
+npx hardhat run scripts/deploy.js --network ropsten                  
+-----------
+
+npx hardhat run scripts/interact.js
+
