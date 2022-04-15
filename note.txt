@@ -14,3 +14,8 @@ npx hardhat run scripts/deploy.js --network ropsten
 
 npx hardhat run scripts/interact.js
 
+--------
+install --save-dev @nomiclabs/hardhat-etherscan
+  !!!! hardhat.config.js
+
+npx hardhat verify --network ropsten 0x4037aE849421a10Be7f89232Db0068DFbDeD0c8b   
