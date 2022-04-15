@@ -7,15 +7,26 @@ mkdir scripts
 npm install dotenv --save
      ---- creact file .env
 npm install --save-dev @nomiclabs/hardhat-ethers "ethers@^5.0.0"
-    !!!! edid file hardhat.config.js
+    !!!! edit file hardhat.config.js
 npx hardhat compile       
-npx hardhat run scripts/deploy.js --network ropsten                  
+npx hardhat run scripts/deploy.js --network ropsten 
+    ===== Contract deployed to address: 0xcB2E6A3E8db6D22927C7737123e1adEb53EaA4a9             
 -----------
 
+
+    ---- creact scripts/interact.js 
+npx hardhat run scripts/interact.js
+    !!!! edit file  scripts/interact.js 
 npx hardhat run scripts/interact.js
 
---------
-install --save-dev @nomiclabs/hardhat-etherscan
-  !!!! hardhat.config.js
 
-npx hardhat verify --network ropsten 0x4037aE849421a10Be7f89232Db0068DFbDeD0c8b   
+--------
+    !!!! edit file .env
+npm install --save-dev @nomiclabs/hardhat-etherscan
+    !!!! edit file hardhat.config.js
+
+npx hardhat verify --network ropsten 0xcB2E6A3E8db6D22927C7737123e1adEb53EaA4a9 
+
+
+
+https://ropsten.etherscan.io/address/0xcB2E6A3E8db6D22927C7737123e1adEb53EaA4a9#code
