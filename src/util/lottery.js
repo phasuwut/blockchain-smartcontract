@@ -4,15 +4,15 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0xD938e15C48c0408eC658726ef3D30d0Af11789CB";
+const contractAddress = "0xcB2E6A3E8db6D22927C7737123e1adEb53EaA4a9";
 
 export const lotteryContract = new web3.eth.Contract(contractABI, contractAddress);
 export const lotteryManeger = async () => {
 	const message = await lotteryContract.methods.manager().call();
 	return message;
 };
-export const getMyBalance = async () => {
-	const message = await lotteryContract.methods.getMyBalance().call();
+export const getMyBalance = async (myAddress) => {
+	const message = await lotteryContract.methods.getMyBalance().call({ from: myAddress });
 	return message;
 };
 export const getBuyerResult = async () => {
@@ -21,7 +21,6 @@ export const getBuyerResult = async () => {
 };
 export const getPeriodAll = async () => {
 	const message = await lotteryContract.methods.getPeriodAll().call();
-	console.log(message);
 	return message;
 };
 export const buyersRegister = async (myAddress, firstName, lastName, email) => {
@@ -37,6 +36,47 @@ export const buyersRegister = async (myAddress, firstName, lastName, email) => {
 		to: contractAddress, // Required except during contract publications.
 		from: myAddress, // must match user's active address.
 		data: lotteryContract.methods.buyersRegister(firstName, lastName, email).encodeABI(),
+	};
+
+	//sign the transaction
+	try {
+		const txHash = await window.ethereum.request({
+			method: "eth_sendTransaction",
+			params: [transactionParameters],
+		});
+
+		return {
+			status: (
+				<span>
+					✅{" "}
+					<a target="_blank" href={`https://ropsten.etherscan.io/tx/${txHash}`}>
+						View the status of your transaction on Etherscan!
+					</a>
+					<br />
+					ℹ️ Once the transaction is verified by the network, the message will be updated
+					automatically.
+				</span>
+			),
+		};
+	} catch (error) {
+		return {
+			status: "😥 " + error.message,
+		};
+	}
+};
+export const generateLottery = async (myAddress, Period) => {
+	//input error handling
+	if (!window.ethereum || myAddress === null) {
+		return {
+			status: "💡 Connect your Metamask wallet to update the message on the blockchain.",
+		};
+	}
+
+	//set up transaction parameters
+	const transactionParameters = {
+		to: contractAddress, // Required except during contract publications.
+		from: myAddress, // must match user's active address.
+		data: lotteryContract.methods.generateLottery(Period).encodeABI(),
 	};
 
 	//sign the transaction
@@ -64,47 +104,24 @@ export const buyersRegister = async (myAddress, firstName, lastName, email) => {
 		};
 	}
 };
+export const isRegistor = async (myAddress) => {
+	const message = await lotteryContract.methods.isRegistor().call({ from: myAddress });
+	return message;
+};
+export const getMyDetailBuyer = async (myAddress) => {
+	const message = await lotteryContract.methods.getMyDetailBuyer().call({ from: myAddress });
+	return message;
+};
+export const getPeriodDetail = async (Period) => {
+	// จะบอกว่าแต่ละ period มีเลขอะไรบ้าง
+	const message = await lotteryContract.methods.getPeriodDetail(Period).call();
+	return message;
+};
+export const getLotteryDetailByAddress = async (lotteryNo, Period) => {
 
-export const generateLottery = async (myAddress,Period )=>{
-		//input error handling
-		if (!window.ethereum || myAddress === null) {
-			return {
-				status: "💡 Connect your Metamask wallet to update the message on the blockchain.",
-			};
-		}
-	
-		//set up transaction parameters
-		const transactionParameters = {
-			to: contractAddress, // Required except during contract publications.
-			from: myAddress, // must match user's active address.
-			data: lotteryContract.methods.generateLottery(Period).encodeABI(),
-		};
-	
-		//sign the transaction
-		try {
-			const txHash = await window.ethereum.request({
-				method: "eth_sendTransaction",
-				params: [transactionParameters],
-			});
-			return {
-				status: (
-					<span>
-						✅{" "}
-						<a target="_blank" href={`https://ropsten.etherscan.io/tx/${txHash}`}>
-							View the status of your transaction on Etherscan!
-						</a>
-						<br />
-						ℹ️ Once the transaction is verified by the network, the message will be updated
-						automatically.
-					</span>
-				),
-			};
-		} catch (error) {
-			return {
-				status: "😥 " + error.message,
-			};
-		}
-}
+	const message = await lotteryContract.methods.getLotteryDetailByAddress(lotteryNo, Period).call();
+	return message;
+};
 
 // bug
 export const getMyaddress = async (address) => {

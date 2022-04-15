@@ -59,6 +59,7 @@ const MasterLayoutNavbar = () => {
 					<NavDropdown title="Tools" id="basic-nav-dropdown">
 						<NavDropdown.Item href="check">Check All</NavDropdown.Item>
 						<NavDropdown.Item href="back-office">BackOffice</NavDropdown.Item>
+						<NavDropdown.Item href="my-detail">MyDetail</NavDropdown.Item>
 					</NavDropdown>
 				</Nav>
 				<Form inline>
