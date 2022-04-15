@@ -165,6 +165,9 @@ export const buyingLottery = async (myAddress, lotteryNo, Period) => {
 
 };
 
+
+
+
 // bug
 export const getMyaddress = async (address) => {
 	/* 	const transactionParameters = {
