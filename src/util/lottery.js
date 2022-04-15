@@ -4,7 +4,7 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0xD938e15C48c0408eC658726ef3D30d0Af11789CB";
+const contractAddress = "0xcB2E6A3E8db6D22927C7737123e1adEb53EaA4a9";
 
 export const lotteryContract = new web3.eth.Contract(contractABI, contractAddress);
 export const lotteryManeger = async () => {
