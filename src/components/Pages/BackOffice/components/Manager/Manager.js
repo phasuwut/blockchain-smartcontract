@@ -1,36 +1,27 @@
-import React, { useState, useMemo } from "react";
-
-import { generateLottery, getPeriodAll } from "../../../../../util/lottery";
 import { Button, Form } from "react-bootstrap";
+import React, { useEffect, useMemo, useState } from "react";
+import { generateLottery, getAward, getPeriodAll } from "../../../../../util/lottery";
+
+import Award from "../../../../Gobal/Award/Award"
 
 const Manager = ({ myAddress }) => {
 	const [period, setPeriod] = useState("");
 	const [periodAll, setPeriodAll] = useState([]);
 
+
+
 	const handleonSubmitGenerateLottery = (event) => {
 		event.preventDefault();
-		console.log(period);
 		generateLottery(myAddress, period).then((res) => {
 			console.log(res);
 		});
 	};
-	useMemo(() => {
-		getPeriodAll().then((res) => {
-			console.log(res);
-			setPeriodAll(res);
-		});
-	}, []);
+
 	return (
 		<div>
 			<h1>BackOffice manager</h1>
 			<hr />
-			<h4>PeriodAll</h4>
-			<ul>
-				{periodAll.map((item, i) => {
-					return <li key={i}>{item}</li>;
-				})}
-			</ul>
-			<hr />
+			<Award  />
 			<Form onSubmit={handleonSubmitGenerateLottery}>
 				<Form.Group className="mb-3">
 					<Form.Label>Period</Form.Label>

@@ -164,9 +164,55 @@ export const buyingLottery = async (myAddress, lotteryNo, Period) => {
 	}
 };
 
-export const getMyLotteryByPeriod = async (myAddress,period) => {
-	const message = await lotteryContract.methods.getMyLotteryByPeriod(period).call({ from: myAddress });
+export const getMyLotteryByPeriod = async (myAddress, period) => {
+	const message = await lotteryContract.methods
+		.getMyLotteryByPeriod(period)
+		.call({ from: myAddress });
 	return message;
+};
+
+export const getAward = async (period) => {
+	const message = await lotteryContract.methods.getAward(period).call();
+	return message;
+};
+
+export const awarding = async (myAddress, period) => {
+	/* 	const message = await lotteryContract.methods.awarding(period).call({ from: myAddress });
+	return message;
+ */
+
+	//set up transaction parameters
+	const transactionParameters = {
+		to: contractAddress, // Required except during contract publications.
+		from: myAddress, // must match user's active address.
+		data: lotteryContract.methods.awarding(period).encodeABI(),
+	};
+
+	//sign the transaction
+	try {
+		const txHash = await window.ethereum.request({
+			method: "eth_sendTransaction",
+			params: [transactionParameters],
+		});
+
+		return {
+			status: (
+				<span>
+					✅{" "}
+					<a target="_blank" href={`https://ropsten.etherscan.io/tx/${txHash}`}>
+						View the status of your transaction on Etherscan!
+					</a>
+					<br />
+					ℹ️ Once the transaction is verified by the network, the message will be updated
+					automatically.
+				</span>
+			),
+		};
+	} catch (error) {
+		return {
+			status: "😥 " + error.message,
+		};
+	}
 };
 
 // bug
