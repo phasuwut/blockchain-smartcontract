@@ -1,16 +1,19 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { Table, Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
+import React, { useEffect, useMemo, useState } from "react";
 import {
-	getPeriodDetail,
-	getLotteryDetailByAddress,
+	buyingLottery,
 	isRegistor as getIsRegistor,
-	buyingLottery
+	getLotteryDetailByAddress,
+	getPeriodDetail,
 } from "../../../../../util/lottery";
 
 const Lottery = ({ period }) => {
 	const [myAddress, setMyaddress] = useState("");
 	const [isRegistor, setIsRegistor] = useState(false);
 	const [status, setStatus] = useState("");
+
+	const [browserIsCannotMetamask, setBrowserIsCannotMetamask] = useState(false);
+ 
 	useMemo(() => {
 		const fetchData = () => {
 			const { ethereum } = window;
@@ -19,13 +22,19 @@ const Lottery = ({ period }) => {
 				setMyaddress(MyAddress);
 			});
 		};
-		fetchData();
+
+		if (window.ethereum) {
+			setBrowserIsCannotMetamask(true);
+			fetchData();
+		} else {
+			setBrowserIsCannotMetamask(false);
+		}
 	}, []);
+
 	useEffect(() => {
 		if (myAddress !== "") {
 			getIsRegistor(myAddress).then((res) => {
-				//console.log(res);
-				setIsRegistor(res)
+				setIsRegistor(res);
 			});
 		}
 	}, [myAddress]);
@@ -53,15 +62,11 @@ const Lottery = ({ period }) => {
 	}, [period]);
 
 	const handleOnBuy = (item) => {
-		console.log(item);
-		console.log(myAddress);
-		buyingLottery(myAddress,item.number,period).then((res)=>{
-			console.log(res)
-			setStatus(res)
-		})
+		buyingLottery(myAddress, item.number, period).then((res) => {
+			console.log(res);
+			setStatus(res);
+		});
 	};
-
-
 
 	return (
 		<div>
@@ -82,14 +87,23 @@ const Lottery = ({ period }) => {
 					{listLottery.map((item, i) => {
 						return (
 							<tr key={i}>
+								
 								<td>{item.number}</td>
 								<td>{item.amount}</td>
 								<td>{item.address}</td>
-								<td>{item.listAddress.toString()}</td>
+								<td>
+									<ul>
+										{item.listAddress.map((item2, j) => {
+											return <li key={j}>{item2}</li>;
+										})}
+									</ul>
+
+								
+								</td>
 								<td>
 									<Button
 										variant="primary"
-										disabled={item.amount === "0" || !isRegistor}
+										disabled={item.amount === "0" || !isRegistor || !browserIsCannotMetamask}
 										onClick={() => handleOnBuy(item)}
 									>
 										ซื้อ

@@ -128,7 +128,7 @@ export const buyingLottery = async (myAddress, lotteryNo, Period) => {
 			status: "💡 Connect your Metamask wallet to update the message on the blockchain.",
 		};
 	}
-	const wei = web3.utils.toWei("0.00000008", 'ether')
+	const wei = web3.utils.toWei("0.00000008", "ether");
 	//set up transaction parameters
 	const transactionParameters = {
 		to: contractAddress, // Required except during contract publications.
@@ -162,11 +162,12 @@ export const buyingLottery = async (myAddress, lotteryNo, Period) => {
 			status: "😥 " + error.message,
 		};
 	}
-
 };
 
-
-
+export const getMyLotteryByPeriod = async (myAddress,period) => {
+	const message = await lotteryContract.methods.getMyLotteryByPeriod(period).call({ from: myAddress });
+	return message;
+};
 
 // bug
 export const getMyaddress = async (address) => {
