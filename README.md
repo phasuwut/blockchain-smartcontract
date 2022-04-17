@@ -18,6 +18,11 @@ develop จะเอาไว้เขียน code หลัก
 build
 yarn build
 
+
+
+Heroku 
+see more => https://devcenter.heroku.com/articles/git
+deploy => git push heroku uat-bank:main     
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
