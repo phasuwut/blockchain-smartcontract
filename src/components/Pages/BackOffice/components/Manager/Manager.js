@@ -22,6 +22,7 @@ const Manager = ({ myAddress }) => {
 			<h1>BackOffice manager</h1>
 			<hr />
 			<Award  />
+			
 			<Form onSubmit={handleonSubmitGenerateLottery}>
 				<Form.Group className="mb-3">
 					<Form.Label>Period</Form.Label>

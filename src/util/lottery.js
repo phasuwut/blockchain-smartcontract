@@ -177,11 +177,6 @@ export const getAward = async (period) => {
 };
 
 export const awarding = async (myAddress, period) => {
-	/* 	const message = await lotteryContract.methods.awarding(period).call({ from: myAddress });
-	return message;
- */
-
-	//set up transaction parameters
 	const transactionParameters = {
 		to: contractAddress, // Required except during contract publications.
 		from: myAddress, // must match user's active address.
@@ -207,6 +202,7 @@ export const awarding = async (myAddress, period) => {
 					automatically.
 				</span>
 			),
+			addressTransactions:txHash
 		};
 	} catch (error) {
 		return {

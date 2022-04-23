@@ -13,6 +13,7 @@ const Award = () => {
 	const [manager, setManeger] = useState("");
 	const [myAddress, setMyAddress] = useState("");
 	const [status, setStatus] = useState("");
+	const [addressTransactions, setAddressTransactions] = useState("");
 
 	useMemo(() => {
 		const fetch = async () => {
@@ -54,10 +55,9 @@ const Award = () => {
 		fetch();
 	}, [periodAll]);
 	const handleAwarding = (item) => {
-		console.log(item);
 		awarding(myAddress, item.period).then((res) => {
-			console.log(res);
 			setStatus(res);
+			setAddressTransactions(res.addressTransactions);
 		});
 	};
 
@@ -69,6 +69,7 @@ const Award = () => {
 		setShow(true);
 		setSelectShowAddress(i);
 	};
+
 
 	return (
 		<Wepper>
@@ -98,7 +99,11 @@ const Award = () => {
 								<td>{item.isAwarding.toString()}</td>
 								<td>{item.lotteryStruct}</td>
 								<td>
-									<Button variant="primary" onClick={() => handleShow(i)} disabled={!item.isAwarding}>
+									<Button
+										variant="primary"
+										onClick={() => handleShow(i)}
+										disabled={!item.isAwarding}
+									>
 										กดเพื่อดูว่าใครถูกบ้าง
 									</Button>
 								</td>
@@ -119,29 +124,33 @@ const Award = () => {
 				</tbody>
 			</Table>
 
-
 			<hr />
-			<p id="status">{status}</p>
+			{addressTransactions !== "" ? (
+				<div>
+					<h6>Status</h6>
+					<p id="status">{status.status}</p>
+				</div>
+			) : null}
 
-					
-
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Address ที่ถูกรางวัล</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<ui>
-						{listAward[selectShowAddress].listAddress.map((item2, j) => {
-							return <li key={j}>{item2}</li>;
-						})}
-					</ui>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-				</Modal.Footer>
-			</Modal>
+			{selectShowAddress !== "" || listAward.length1 == 0 ? (
+				<Modal show={show} onHide={handleClose}>
+					<Modal.Header closeButton>
+						<Modal.Title>Address ที่ถูกรางวัล</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<ui>
+							{listAward[selectShowAddress].listAddress.map((item2, j) => {
+								return <li key={j}>{item2}</li>;
+							})}
+						</ui>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={handleClose}>
+							Close
+						</Button>
+					</Modal.Footer>
+				</Modal>
+			) : null}
 		</Wepper>
 	);
 };
