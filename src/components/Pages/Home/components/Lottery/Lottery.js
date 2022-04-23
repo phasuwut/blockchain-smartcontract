@@ -2,25 +2,27 @@ import { Button, Table } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
 import {
 	buyingLottery,
+	getAward,
 	isRegistor as getIsRegistor,
 	getLotteryDetailByAddress,
-	getPeriodDetail,
+	getPeriodDetail
 } from "../../../../../util/lottery";
 
 const Lottery = ({ period }) => {
 	const [myAddress, setMyaddress] = useState("");
 	const [isRegistor, setIsRegistor] = useState(false);
 	const [status, setStatus] = useState("");
-
+	const [isAwarding, setIsAwarding] = useState(true);
 	const [browserIsCannotMetamask, setBrowserIsCannotMetamask] = useState(false);
  
 	useMemo(() => {
-		const fetchData = () => {
+		const fetchData = async() => {
 			const { ethereum } = window;
 			ethereum.request({ method: "eth_accounts" }).then((res) => {
 				const MyAddress = res[0];
 				setMyaddress(MyAddress);
 			});
+
 		};
 
 		if (window.ethereum) {
@@ -55,6 +57,9 @@ const Lottery = ({ period }) => {
 					amount: lotteryDetailByAddress.amount,
 				});
 			}
+
+			const award = await getAward(period);
+			setIsAwarding(award.isAwarding)
 
 			setListLottery(arr);
 		};
@@ -103,7 +108,7 @@ const Lottery = ({ period }) => {
 								<td>
 									<Button
 										variant="primary"
-										disabled={item.amount === "0" || !isRegistor || !browserIsCannotMetamask}
+										disabled={item.amount === "0" || !isRegistor || !browserIsCannotMetamask || isAwarding}
 										onClick={() => handleOnBuy(item)}
 									>
 										ซื้อ
