@@ -109,8 +109,6 @@ const SearchPage = () => {
 		const fetchMessage = async () => {
 			const arr = [];
 			const periodDetail = await getPeriodDetail(period);
-			console.log(periodDetail);
-			console.log("4444")
 			for (let i = 0; i < periodDetail.length; i++) {
 				const address = `${periodDetail[i]}${period}`;
 				const lotteryDetailByAddress = await getLotteryDetailByAddress(periodDetail[i], period);
@@ -133,8 +131,18 @@ const SearchPage = () => {
 			setStatus(res);
 		});
 	};
+	var [search, setSearch] = useState("");
+	const handleChange = e => {
+		// setSearchField(e.target.value);
+		if(e.target.value===""){
+			setSearch("")
+		}
+		else {
+			setSearch(e.target.value)
+		}
+	  };
 
-
+	console.log(listLottery)
 
 	return (
 		<MasterLayout>
@@ -144,57 +152,22 @@ const SearchPage = () => {
 				<form action="/" method="get">
 
 					<br />
-					{/* <p>{`Period => ${period}`}</p> */}
 
 					<div className="form-group">
 						<Row className="justify-content-md-center">
-							<Col md={{ span: 6 }}><input type="text" className="form-control" placeholder="Search" /></Col>
-							<Col md={{ span: 2 }}><button type="button" className="btn btn-warning btn-lg btn-block">Search</button></Col>
+							<Col md={{ span: 8 }}><input type="text" className="form-control" placeholder="Search" onChange = {handleChange}/></Col>
+							{/* <Col md={{ span: 2 }}><button type="button" className="btn btn-warning btn-lg btn-block" >Search</button></Col> */}
 						</Row>
 
 					</div>
 				</form>
 				<br />
-				{/* <Row className="justify-content-md-center">
-					<Card style={{ width: '30rem', marginLeft: '3%', border: '3px solid #ffc107', backgroundColor: 'cornsilk' }}>
-						<Card.Body>
-							<Card.Title>งวดวันที่ : 16 เมษายน 2565</Card.Title>
-							<Card.Subtitle className="mb-2 text-muted">คงเหลือ : 10 ใบ</Card.Subtitle>
-							<Card.Text>
-								<h3 style={{ textAlign: 'center' }}>1 1 1 1 1 1</h3>
-							</Card.Text>
-							<Row><Col md={{ span: 2 }}><BuyLottery /> </Col>
-								<Col md={{ span: 3 }}><AddBasket /> </Col></Row>
-						</Card.Body>
-					</Card>
-					<Card style={{ width: '30rem', marginLeft: '3%', border: '3px solid #ffc107', backgroundColor: 'cornsilk' }}>
-						<Card.Body>
-							<Card.Title>งวดวันที่ : 16 เมษายน 2565</Card.Title>
-							<Card.Subtitle className="mb-2 text-muted">คงเหลือ : 30 ใบ</Card.Subtitle>
-							<Card.Text>
-								<h3 style={{ textAlign: 'center' }}>2 2 2 2 2 2</h3>
-							</Card.Text>
-							<Row><Col md={{ span: 2 }}><BuyLottery /> </Col>
-								<Col md={{ span: 3 }}><AddBasket /> </Col></Row>
-						</Card.Body>
-					</Card>
-					<Card style={{ width: '30rem', marginLeft: '3%', border: '3px solid #ffc107', backgroundColor: 'cornsilk' }}>
-						<Card.Body>
-							<Card.Title>งวดวันที่ : 16 เมษายน 2565</Card.Title>
-							<Card.Subtitle className="mb-2 text-muted">คงเหลือ : 5 ใบ</Card.Subtitle>
-							<Card.Text>
-								<h3 style={{ textAlign: 'center' }}>3 3 3 3 3 3</h3>
-							</Card.Text>
-							<Row><Col md={{ span: 2 }}><BuyLottery /> </Col>
-								<Col md={{ span: 3 }}><AddBasket /> </Col></Row>
-						</Card.Body>
-					</Card>
-
-				</Row> */}
-				{/* <p>{`Period => ${period.substring(0, 2)}`}</p> <p>{`Period => ${period.substring(4)}`}</p> */}
+	
 				<div class="container">
 					<Row className="justify-content-md-center">
-						{listLottery.map((item, i) => {
+
+						
+						{listLottery.filter(lotery => lotery.number.includes(search)).map((item, i) => {
 							return (
 									<Card style={{ width: '30rem', marginLeft: '3%', border: '3px solid #ffc107', backgroundColor: 'cornsilk' }}>
 										<Card.Body>
