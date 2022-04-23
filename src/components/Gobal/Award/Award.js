@@ -1,8 +1,9 @@
-import { Button, Table } from "react-bootstrap";
+import { Accordion, Button, Modal, Table } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
 import { awarding, getAward, getPeriodAll, lotteryManeger } from "util/lottery";
 
 import { getCurrentWalletConnected } from "lib/interact";
+import styled from "styled-components";
 
 const Award = () => {
 	const [periodAll, setPeriodAll] = useState([]);
@@ -60,19 +61,29 @@ const Award = () => {
 		});
 	};
 
-	return (
-		<div>
-			<h4>PeriodAll</h4>
+	// Modal
+	const [show, setShow] = useState(false);
+	const [selectShowAddress, setSelectShowAddress] = useState("");
+	const handleClose = () => setShow(false);
+	const handleShow = (i) => {
+		setShow(true);
+		setSelectShowAddress(i);
+	};
 
-			<Table>
+	return (
+		<Wepper>
+			<h4>Period ทั้งหมด</h4>
+
+			<Table bordered hover responsive striped>
 				<thead>
 					<tr>
-						<th>period</th>
-						<th>Balance</th>
-						<th>BalancePerAddress</th>
-						<th>isAwarding</th>
-						<th>เลขอะไร</th>
-
+						<th>#</th>
+						<th>Period</th>
+						<th>จำนวนเงินที่ได้ต่องวด (Wei)</th>
+						<th>แต่ละ Address จะได้จะนวนเงินเท่าไหร่ (Wei)</th>
+						<th>ออกรางวัลไปยัง</th>
+						<th>เลขที่ออก</th>
+						<th>Address ที่ถูกรางวัล</th>
 						{isManeger ? <th> ออกสลาก</th> : null}
 					</tr>
 				</thead>
@@ -80,12 +91,17 @@ const Award = () => {
 					{listAward.map((item, i) => {
 						return (
 							<tr key={i}>
+								<td>{i + 1}</td>
 								<td>{item.period}</td>
 								<td>{item.Balance}</td>
 								<td>{item.BalancePerAddress}</td>
 								<td>{item.isAwarding.toString()}</td>
 								<td>{item.lotteryStruct}</td>
-								<td>{item.listAddress.toString()}</td>
+								<td>
+									<Button variant="primary" onClick={() => handleShow(i)} disabled={!item.isAwarding}>
+										กดเพื่อดูว่าใครถูกบ้าง
+									</Button>
+								</td>
 								{isManeger ? (
 									<td>
 										<Button
@@ -103,11 +119,33 @@ const Award = () => {
 				</tbody>
 			</Table>
 
-			<hr />
 
+			<hr />
 			<p id="status">{status}</p>
-		</div>
+
+					
+
+			<Modal show={show} onHide={handleClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>Address ที่ถูกรางวัล</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<ui>
+						{listAward[selectShowAddress].listAddress.map((item2, j) => {
+							return <li key={j}>{item2}</li>;
+						})}
+					</ui>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleClose}>
+						Close
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		</Wepper>
 	);
 };
+
+const Wepper = styled.div``;
 
 export default Award;
