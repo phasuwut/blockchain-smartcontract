@@ -1,7 +1,7 @@
 import { applyMiddleware, createStore } from "redux";
 
 import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "./rootReducer";
+import rootReducer from "store/rootReducer";
 import thunkMiddleware from "redux-thunk";
 
 const bindMiddleware = (middleware: any) => {

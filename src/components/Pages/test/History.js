@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import MasterLayout from "../../../components/Layout/MasterLayout/MasterLayout";
+import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
 import React from "react";
-import { RootState } from "../../../store/rootReducer";
-import { setProfile } from "../../../store/profile/profile";
+import { RootState } from "store/rootReducer";
+import { setProfile } from "store/profile/profile";
 import styled from "styled-components";
 
 const HistoryPage = (props) => {

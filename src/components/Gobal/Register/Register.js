@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { buyersRegister } from "../../../util/lottery";
-
 import { Button, Form } from "react-bootstrap";
+import React, { useState } from "react";
+
+import { buyersRegister } from "util/lottery";
 
 const Register = ({ myAddress }) => {
 	const [firstName, setFirstName] = useState("");

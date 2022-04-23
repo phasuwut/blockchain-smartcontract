@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { generateLottery, lotteryManeger } from "../../../util/lottery";
+import { generateLottery, lotteryManeger } from "util/lottery";
 
-import Manager from "./components/Manager/Manager";
-import ManagerLess from "./components/ManagerLess/ManagerLess";
-import MasterLayout from "../../Layout/MasterLayout/MasterLayout";
-import { getCurrentWalletConnected } from "../../../lib/interact";
+import Manager from "components/Pages/BackOffice/components/Manager/Manager";
+import ManagerLess from "components/Pages/BackOffice/components/ManagerLess/ManagerLess";
+import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
+import { getCurrentWalletConnected } from "lib/interact";
 
 const BackOffice = () => {
 	const [manager, setManeger] = useState("");

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
-import Footer from "./Footer/Footer";
-import Navbar from "./Navbar/Navbar";
+import Footer from "components/Layout/MasterLayout/Footer/Footer";
+import Navbar from "components/Layout/MasterLayout/Navbar/Navbar";
 import styled from "styled-components";
 
 const MasterLayout = ({ children }) => {

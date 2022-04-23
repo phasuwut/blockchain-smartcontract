@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import MasterLayout from "../../Layout/MasterLayout/MasterLayout";
-import { lotteryManeger } from "../../../util/lottery";
+import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
+import { lotteryManeger } from "util/lottery";
 
 const ContactUs = () => {
 	console.log(lotteryManeger);

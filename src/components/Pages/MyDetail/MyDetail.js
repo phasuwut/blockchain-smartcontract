@@ -1,8 +1,8 @@
 import { Button, Table } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
-import { getMyDetailBuyer, getMyLotteryByPeriod } from "../../../util/lottery";
+import { getMyDetailBuyer, getMyLotteryByPeriod } from "util/lottery";
 
-import MasterLayout from "../../../components/Layout/MasterLayout/MasterLayout";
+import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
 
 const MyDetail = () => {
 	const [browserIsCannotMetamask, setBrowserIsCannotMetamask] = useState(false);

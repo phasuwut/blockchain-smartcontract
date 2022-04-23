@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import etcReducer from "./etc/etc";
-import profileReducer from "./profile/profile";
-import walletReducer from "./wallet/wallet";
+import etcReducer from "store/etc/etc";
+import profileReducer from "store/profile/profile";
+import walletReducer from "store/wallet/wallet";
 
 export type RootState = ReturnType<typeof rootReducer>;
 

@@ -1,8 +1,8 @@
 import { Button, Form } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
-import { generateLottery, getAward, getPeriodAll } from "../../../../../util/lottery";
+import { generateLottery, getAward, getPeriodAll } from "util/lottery";
 
-import Award from "../../../../Gobal/Award/Award"
+import Award from "components/Gobal/Award/Award"
 
 const Manager = ({ myAddress }) => {
 	const [period, setPeriod] = useState("");

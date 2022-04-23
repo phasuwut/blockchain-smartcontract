@@ -5,11 +5,11 @@ import {
 	getMyaddress,
 	getPeriodAll,
 	isRegistor,
-} from "../../../util/lottery";
+} from "util/lottery";
 
-import MasterLayout from "../../Layout/MasterLayout/MasterLayout";
-import Register from "../../Gobal/Register/Register";
-import { getCurrentWalletConnected } from "../../../lib/interact";
+import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
+import Register from "components/Gobal/Register/Register";
+import { getCurrentWalletConnected } from "lib/interact";
 
 const Check = () => {
 	const [myAddress, setMyaddress] = useState("");

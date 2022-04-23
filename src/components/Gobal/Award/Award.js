@@ -1,8 +1,8 @@
 import { Button, Table } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
-import { awarding, getAward, getPeriodAll, lotteryManeger } from "../../../util/lottery";
+import { awarding, getAward, getPeriodAll, lotteryManeger } from "util/lottery";
 
-import { getCurrentWalletConnected } from "../../../lib/interact";
+import { getCurrentWalletConnected } from "lib/interact";
 
 const Award = () => {
 	const [periodAll, setPeriodAll] = useState([]);

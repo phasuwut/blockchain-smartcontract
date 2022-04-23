@@ -1,4 +1,4 @@
-import MasterLayout from "../../../components/Layout/MasterLayout/MasterLayout";
+import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
 import React from "react";
 import styled from "styled-components";
 

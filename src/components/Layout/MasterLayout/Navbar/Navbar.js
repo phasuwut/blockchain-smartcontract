@@ -3,8 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { connectWallet, getCurrentWalletConnected, getUserBalance } from "../../../../lib/interact";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../../../store/rootReducer";
-import { setWallet as setWalletStore } from "../../../../store/wallet/wallet";
+import { RootState } from "store/rootReducer";
+import { setWallet as setWalletStore } from "store/wallet/wallet";
 
 const MasterLayoutNavbar = () => {
 	//dedux
