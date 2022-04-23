@@ -73,7 +73,7 @@ const Award = () => {
 
 	return (
 		<Wepper>
-			<h4>Period ทั้งหมด</h4>
+	
 
 			<Table bordered hover responsive striped>
 				<thead>
@@ -124,10 +124,10 @@ const Award = () => {
 				</tbody>
 			</Table>
 
-			<hr />
+			
 			{addressTransactions !== "" ? (
 				<div>
-					<h6>Status</h6>
+					<h6>Transaction การออกรางวัล</h6>
 					<p id="status">{status.status}</p>
 				</div>
 			) : null}
@@ -151,6 +151,7 @@ const Award = () => {
 					</Modal.Footer>
 				</Modal>
 			) : null}
+			<hr />
 		</Wepper>
 	);
 };
