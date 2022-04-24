@@ -4,6 +4,7 @@ import Award from "components/Pages/Award/Award"
 import BackOffice from "components/Pages/BackOffice/BackOffice";
 import Check from "components/Pages/Check/Check";
 import ContactUs  from "components/Pages/ContactUs/ContactUs";
+import DetailEtc from "components/Pages/DetailEtc/DetailEtc"
 import HistoryPage from "components/Pages/History/History";
 import HomePage from "components/Pages/Home/Home";
 import MyDetail from "components/Pages/MyDetail/MyDetail"
@@ -24,6 +25,7 @@ function App() {
 					<Route path="check" element={<Check />} />
 					<Route path="back-office" element={<BackOffice />} />
 					<Route path="my-detail" element={<MyDetail/>} />
+					<Route path="detail-all" element={<DetailEtc />} />
 					<Route path="*" element={<Page404Page />} />
 				</Route>
 			</Routes>
