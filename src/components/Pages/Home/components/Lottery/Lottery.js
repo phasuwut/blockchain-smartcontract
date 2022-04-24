@@ -73,15 +73,17 @@ const Lottery = ({ period }) => {
 	};
 
 	console.log(`${period}=> ${isAwarding}`);
-	console.log(`${isRegistor}=> ${isRegistor}`);
-	console.log(`${browserIsCannotMetamask}=> ${browserIsCannotMetamask}`);
+	console.log(`${isRegistor}=> ${!isRegistor}`);
+	console.log(`${browserIsCannotMetamask}=> ${!browserIsCannotMetamask}`);
+	console.log(status);
 	console.log("");
+
 
 	return (
 		<div>
 			<hr />
 			<p>{`Period => ${period}`}</p>
-			<p id="status">{status}</p>
+			<p id="status">{status.status}</p>
 			<Table>
 				<thead>
 					<tr>

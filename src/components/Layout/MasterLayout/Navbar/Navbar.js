@@ -46,13 +46,13 @@ const MasterLayoutNavbar = () => {
 					<Nav.Link href="/">Home</Nav.Link>
 					<Nav.Link href="search">search</Nav.Link>
 					<Nav.Link href="history">history</Nav.Link>
-					<NavDropdown title="Smart Contract" id="basic-nav-dropdown">
+					{/* 					<NavDropdown title="Smart Contract" id="basic-nav-dropdown">
 						<NavDropdown.Item href="smart-contract/test1">SmartContractTest1</NavDropdown.Item>
 						<NavDropdown.Item href="contact-us">Contact-us</NavDropdown.Item>
 						<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
 						<NavDropdown.Divider />
 						<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-					</NavDropdown>
+					</NavDropdown> */}
 					<NavDropdown title="Lottery" id="basic-nav-dropdown">
 						<NavDropdown.Item href="contact-us">Contact-us</NavDropdown.Item>
 					</NavDropdown>
