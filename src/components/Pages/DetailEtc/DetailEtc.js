@@ -31,7 +31,8 @@ const DetailEtc = () => {
 
 	return (
 		<MasterLayout>
-			<div>DetailEtc</div>
+			<h1 style={{textAlign: "center"}}> ข้่อมูลต่างๆ ทั้งหมด</h1>
+			
 			<CustomAccordion defaultActiveKey="0">
 				<Accordion.Item eventKey="0">
 					<CustomAccordionHeader>
