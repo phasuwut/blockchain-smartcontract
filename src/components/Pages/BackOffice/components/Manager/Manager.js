@@ -22,7 +22,7 @@ const Manager = ({ myAddress }) => {
 
 	return (
 		<div>
-			<h1>BackOffice manager</h1>
+			<h1 style={{textAlign: "center"}}>BackOffice manager</h1>
 			<hr />
 
 			<Wapper>
@@ -39,7 +39,7 @@ const Manager = ({ myAddress }) => {
 									}
 								}}
 							>
-								<h1>Period ทั้งหมด</h1>
+								<h4>Period ทั้งหมด</h4>
 								{showAccordion === "0" ? (
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@ const Manager = ({ myAddress }) => {
 									}
 								}}
 							>
-								<h1>Ganarate Lorrery</h1>
+								<h4>Ganarate Lorrery</h4>
 								{showAccordion === "1" ? (
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
