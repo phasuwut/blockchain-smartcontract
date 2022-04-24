@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getBuyerResult, getMyBalance, getMyaddress, getPeriodAll, isRegistor } from "util/lottery";
 
 import { Accordion } from "react-bootstrap";
+import Center from "components/Gobal/Center/Center";
 import Flex from "components/Gobal/Flex/Flex";
 import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
 import Register from "components/Gobal/Register/Register";
@@ -115,15 +116,13 @@ const Check = () => {
 					</Accordion>
 
 					<hr />
-					<div></div>
-					<hr />
 
 					{isShowRegistor ? <Register myAddress={myAddress} /> : null}
 				</div>
 			) : (
-				<div>
+				<Center>
 					<h1> Please change browser</h1>
-				</div>
+				</Center>
 			)}
 		</MasterLayout>
 	);

@@ -1,10 +1,10 @@
+import Center from "components/Gobal/Center/Center";
 import React from "react";
-
 const ManagerLess = () => {
 	return (
-		<div>
+		<Center>
 			<h1>Only Manager</h1>
-		</div>
+		</Center>
 	);
 };
 
