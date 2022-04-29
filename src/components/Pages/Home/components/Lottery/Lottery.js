@@ -84,14 +84,15 @@ const Lottery = ({ period }) => {
 			<hr />
 			<p>{`Period => ${period}`}</p>
 			<p id="status">{status.status}</p>
-			<Table>
+			<div className="div-tb">
+			<Table striped bordered hover>
 				<thead>
 					<tr>
-						<th>Number</th>
-						<th>Amount</th>
-						<th>Address</th>
-						<th>Address ของคนที่ซื้อไป</th>
-						<th>ซื้อ</th>
+						<th>หมายเลขล็อตเตอรี่</th>
+						<th>จำนวนคงเหลือ</th>
+						<th>Address ล็อตเตอรี่</th>
+						<th>Address ผู้ซื้อ</th>
+						{/* <th>ซื้อ</th> */}
 					</tr>
 				</thead>
 				<tbody>
@@ -108,7 +109,7 @@ const Lottery = ({ period }) => {
 										})}
 									</ul>
 								</td>
-								<td>
+								{/* <td>
 									<Button
 										variant="primary"
 										disabled={
@@ -118,13 +119,14 @@ const Lottery = ({ period }) => {
 									>
 										ซื้อ
 									</Button>
-								</td>
+								</td> */}
 							</tr>
 						);
 					})}
 				</tbody>
 			</Table>
-			<hr />
+			</div>
+			{/* <hr /> */}
 		</div>
 	);
 };

@@ -11,14 +11,18 @@ import MyDetail from "components/Pages/MyDetail/MyDetail"
 import Page404Page from "components/Pages/Page404/Page404";
 import SearchPage from "components/Pages/Search/Search";
 import SmartContractTest1 from "components/Pages/SmartContract/Test-1/Test1";
+import Login from "./components/Pages/Login/login";
+import Register from "./components/Pages/Register/Register";
+
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route>
-					<Route index element={<HomePage />} />
+					<Route index element={<Login />} />
 					<Route path="search" element={<SearchPage />} />
+					<Route path="home" element={<HomePage />} />
 					<Route path="history" element={<HistoryPage />} />
 					<Route path="smart-contract/test1" element={<SmartContractTest1 />} />
 					<Route path="contact-us" element={<ContactUs  />} />
@@ -27,6 +31,9 @@ function App() {
 					<Route path="my-detail" element={<MyDetail/>} />
 					<Route path="detail-all" element={<DetailEtc />} />
 					<Route path="*" element={<Page404Page />} />
+					<Route path="login" element={<Login />} />
+					<Route path="register" element={<Register />} />
+
 				</Route>
 			</Routes>
 		</BrowserRouter>

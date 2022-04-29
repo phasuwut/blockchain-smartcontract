@@ -13,69 +13,71 @@ import {
 
 
 
-function BuyLottery() {
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
-	return (
-		<>
-			<Button variant="warning" onClick={handleShow}>
-				ซื้อ
-			</Button>
+// function BuyLottery() {
+// 	const [show, setShow] = useState(false);
+// 	const handleClose = () => setShow(false);
+// 	const handleShow = () => setShow(true);
+// 	return (
+// 		<>
+// 			<Button variant="warning" onClick={handleShow}>
+// 				ซื้อ
+// 			</Button>
 
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Modal heading</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="warning" onClick={handleClose}>
-						Save Changes
-					</Button>
-				</Modal.Footer>
-			</Modal>
-		</>
-	);
-}
+// 			<Modal show={show} onHide={handleClose}>
+// 				<Modal.Header closeButton>
+// 					<Modal.Title >ยืนยันการซื้อล็อตเตอรี่</Modal.Title>
+// 				</Modal.Header>
+// 				<Modal.Body>คุณต้องการยืนยันการซื้อล็อตเตอรี่ใช่หรือไม่ ?</Modal.Body>
+// 				<Modal.Footer>
+// 					<Button variant="secondary" onClick={() => handleOnBuy(item)}>
+// 						ปิด
+// 					</Button>
+// 					<Button variant="warning" onClick={handleClose}>
+// 						ซื้อ
+// 					</Button>
+// 				</Modal.Footer>
+// 			</Modal>
+// 		</>
+// 	);
+// }
 
-function AddBasket() {
-	const [show, setShow] = useState(false);
+// function AddBasket() {
+// 	const [show, setShow] = useState(false);
 
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+// 	const handleClose = () => setShow(false);
+// 	const handleShow = () => setShow(true);
 
-	return (
-		<>
-			<Button variant="primary" onClick={handleShow}>
-				ใส่รถเข็น
-			</Button>
+// 	return (
+// 		<>
+// 			<Button variant="primary" onClick={handleShow}>
+// 				ใส่รถเข็น
+// 			</Button>
 
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Modal heading</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="warning" onClick={handleClose}>
-						Save Changes
-					</Button>
-				</Modal.Footer>
-			</Modal>
-		</>
-	);
-}
+// 			<Modal show={show} onHide={handleClose}>
+// 				<Modal.Header closeButton>
+// 					<Modal.Title>Modal heading</Modal.Title>
+// 				</Modal.Header>
+// 				<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+// 				<Modal.Footer>
+// 					<Button variant="secondary" onClick={handleClose}>
+// 						Close
+// 					</Button>
+// 					<Button variant="warning" onClick={handleClose}>
+// 						Save Changes
+// 					</Button>
+// 				</Modal.Footer>
+// 			</Modal>
+// 		</>
+// 	);
+// }
+
 
 
 const SearchPage = () => {
 	const [myAddress, setMyaddress] = useState("");
 	const [isRegistor, setIsRegistor] = useState(false);
 	const [status, setStatus] = useState("");
+	const [isAwarding, setIsAwarding] = useState(true);
 	const [browserIsCannotMetamask, setBrowserIsCannotMetamask] = useState(false);
 
 	useMemo(() => {
@@ -144,6 +146,8 @@ const SearchPage = () => {
 
 	console.log(listLottery)
 
+
+
 	return (
 		<MasterLayout>
 			<Wepper>
@@ -165,8 +169,6 @@ const SearchPage = () => {
 	
 				<div class="container">
 					<Row className="justify-content-md-center">
-
-						
 						{listLottery.filter(lotery => lotery.number.includes(search)).map((item, i) => {
 							return (
 									<Card style={{ width: '30rem', marginLeft: '3%', border: '3px solid #ffc107', backgroundColor: 'cornsilk' }}>
@@ -176,11 +178,28 @@ const SearchPage = () => {
 											<Card.Text>
 												<h3 style={{ textAlign: 'center' }}>{item.number}</h3>
 											</Card.Text>
-											<Row><Col md={{ span: 2 }}><BuyLottery /> </Col>
-												<Col md={{ span: 3 }}><AddBasket /> </Col></Row>
+											<Row><Col md={{ span: 2 }}><Button
+										variant="primary"
+										disabled={
+											item.amount === "0" || !isRegistor || !browserIsCannotMetamask || isAwarding
+										}
+										onClick={() => handleOnBuy(item)}
+									>
+										ซื้อ
+									</Button></Col>
+												{/* <Col md={{ span: 3 }}><AddBasket /></Col> */}
+												</Row>
 										</Card.Body>
 									</Card>
-									
+								// 	<Button
+								// 	variant="primary"
+								 	// disabled={
+								 	// 	item.amount === "0" || !isRegistor || !browserIsCannotMetamask || isAwarding
+									// }
+								// 	onClick={() => handleOnBuy(item)}
+								// >
+								// 	ซื้อ
+								// </Button>
 							);
 						})}
 					

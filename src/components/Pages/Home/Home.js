@@ -21,8 +21,9 @@ const HomePage = () => {
 	return (
 		<MasterLayout>
 			<>
-				<div>Home</div>
-				<h1>Lottery</h1>
+				{/* <div>Home</div> */}
+				<br/>
+				<h1>รายการซื้อ - ขาย ล็อตเตอรี่ </h1>
 			 	{periodAll.map((item, i) => {
 					return <Lottery period={item} key={i} />;
 				})} 
