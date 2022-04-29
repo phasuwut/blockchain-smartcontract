@@ -3,13 +3,32 @@ import { Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export default class Register extends Component {
+    constructor() {
+        super();
+        this.state = {
+        };
+        this.onInputchange = this.onInputchange.bind(this);
+        this.onSubmitForm = this.onSubmitForm.bind(this);
+      }
+    
+      onInputchange(event) {
+        this.setState({
+          [event.target.name]: event.target.value
+        });
+      }
+    
+      onSubmitForm() {
+        console.log(this.state)
+      }
+
     render() {
         return (
             // <div className="container">
             // <br /><br /><br /><br />
+            
             <div className="login-From">
 
-                <form>
+                <form onSubmit={this.onSubmitForm}>
                     <br />
                     <Row className="justify-content-md-center">
                         <h3 >Sign up</h3>
@@ -18,21 +37,24 @@ export default class Register extends Component {
                     <div className="form-group">
                         <Row>
                             <Col md={{ span: 2, offset: 2 }}><label>Firstname</label></Col>
-                            <Col md={{ span: 6 }}> <input type="text" className="form-control" placeholder="Enter firstname" /></Col>
+                            <Col md={{ span: 6 }}> <input type="text" className="form-control" placeholder="Enter firstname" 
+                             value={this.state.fname} onChange={this.onInputchange}/></Col>
                         </Row>
 
                     </div>
                     <div className="form-group">
                         <Row>
                             <Col md={{ span: 2, offset: 2 }}><label>Lastname</label></Col>
-                            <Col md={{ span: 6 }}> <input type="text" className="form-control" placeholder="Enter lastname" /></Col>
+                            <Col md={{ span: 6 }}> <input type="text" className="form-control" placeholder="Enter lastname"
+                            value={this.state.lname} onChange={this.onInputchange} /></Col>
                         </Row>
 
                     </div>
                     <div className="form-group">
                         <Row>
                             <Col md={{ span: 2, offset: 2 }}><label>Email</label></Col>
-                            <Col md={{ span: 6 }}><input type="email" className="form-control" placeholder="Enter email" /></Col>
+                            <Col md={{ span: 6 }}><input type="email" className="form-control" placeholder="Enter email" 
+                            value={this.state.email} onChange={this.onInputchange}/></Col>
                         </Row>
 
                     </div>
@@ -60,7 +82,7 @@ export default class Register extends Component {
                     
                     <Row className="justify-content-md-center">
                         <Col md={{ span: 4}}>
-                        <Link to="/login"><button type="submit" className="btn btn-dark btn-lg btn-block">back</button></Link></Col>
+                        <Link to="/login"><button type="button" className="btn btn-dark btn-lg btn-block">back</button></Link></Col>
                     </Row>
 
 
