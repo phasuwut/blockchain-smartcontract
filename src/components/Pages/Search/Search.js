@@ -1,17 +1,18 @@
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
+import {
+	buyingLottery,
+	getAward,
+	isRegistor as getIsRegistor,
+	getLotteryDetailByAddress,
+	getPeriodAll,
+	getPeriodDetail,
+} from "../../../util/lottery";
+// import { BsFillBasket3Fill } from "react-icons/bs";
+import { useEffect, useMemo, useState } from "react";
+
 import MasterLayout from "../../../components/Layout/MasterLayout/MasterLayout";
 import React from "react";
 import styled from "styled-components";
-import { Card, Row, Col, Button, Modal } from 'react-bootstrap';
-// import { BsFillBasket3Fill } from "react-icons/bs";
-import { useEffect, useState, useMemo } from "react";
-import {
-	buyingLottery,
-	isRegistor as getIsRegistor,
-	getLotteryDetailByAddress,
-	getPeriodDetail,
-} from "../../../util/lottery";
-
-
 
 // function BuyLottery() {
 // 	const [show, setShow] = useState(false);
@@ -106,26 +107,51 @@ const SearchPage = () => {
 	}, [myAddress]);
 
 	const [listLottery, setListLottery] = useState([]);
-	const period = "16052022";
+	  
+	const [period, setPeriodAll] = useState("");
+	//called only once
 	useEffect(() => {
-		const fetchMessage = async () => {
-			const arr = [];
-			const periodDetail = await getPeriodDetail(period);
-			for (let i = 0; i < periodDetail.length; i++) {
-				const address = `${periodDetail[i]}${period}`;
-				const lotteryDetailByAddress = await getLotteryDetailByAddress(periodDetail[i], period);
-				arr.push({
-					address: address,
-					number: periodDetail[i],
-					listAddress: lotteryDetailByAddress.listAddress,
-					amount: lotteryDetailByAddress.amount,
-				});
-			}
-
-			setListLottery(arr);
+		const fetchMessage = () => {
+			getPeriodAll().then((res) => {			
+				setPeriodAll(res[res.length-1]);
+			});
 		};
 		fetchMessage();
+	}, []);
+
+
+	useEffect(() => {
+		const fetchMessage = async () => {
+			if(period!==""){
+				const arr = [];
+				const periodDetail = await getPeriodDetail(period);
+				for (let i = 0; i < periodDetail.length; i++) {
+					const address = `${periodDetail[i]}${period}`;
+					const lotteryDetailByAddress = await getLotteryDetailByAddress(periodDetail[i], period);
+					arr.push({
+						address: address,
+						number: periodDetail[i],
+						listAddress: lotteryDetailByAddress.listAddress,
+						amount: lotteryDetailByAddress.amount,
+					});
+
+
+
+				}
+				setListLottery(arr);
+				
+				const award = await getAward(period);
+				setIsAwarding(award.isAwarding);
+			}
+		};
+		
+		fetchMessage();
 	}, [period]);
+
+
+
+
+	
 
 	const handleOnBuy = (item) => {
 		buyingLottery(myAddress, item.number, period).then((res) => {
