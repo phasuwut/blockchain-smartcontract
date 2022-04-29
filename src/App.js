@@ -7,20 +7,19 @@ import ContactUs  from "components/Pages/ContactUs/ContactUs";
 import DetailEtc from "components/Pages/DetailEtc/DetailEtc"
 import HistoryPage from "components/Pages/History/History";
 import HomePage from "components/Pages/Home/Home";
+import Login from "./components/Pages/Login/login";
 import MyDetail from "components/Pages/MyDetail/MyDetail"
 import Page404Page from "components/Pages/Page404/Page404";
+import Register from "./components/Pages/Register/Register";
 import SearchPage from "components/Pages/Search/Search";
 import SmartContractTest1 from "components/Pages/SmartContract/Test-1/Test1";
-import Login from "./components/Pages/Login/login";
-import Register from "./components/Pages/Register/Register";
-
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route>
-					<Route index element={<Login />} />
+					<Route index element={<HomePage />} />
 					<Route path="search" element={<SearchPage />} />
 					<Route path="home" element={<HomePage />} />
 					<Route path="history" element={<HistoryPage />} />
@@ -31,7 +30,6 @@ function App() {
 					<Route path="my-detail" element={<MyDetail/>} />
 					<Route path="detail-all" element={<DetailEtc />} />
 					<Route path="*" element={<Page404Page />} />
-					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />
 
 				</Route>
