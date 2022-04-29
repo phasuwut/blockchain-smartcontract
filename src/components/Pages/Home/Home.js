@@ -11,8 +11,9 @@ const HomePage = () => {
 	useEffect(() => {
 		const fetchMessage = () => {
 			getPeriodAll().then((res) => {
-				console.log(res);
-				setPeriodAll(res);
+				//console.log(res);
+			
+				setPeriodAll([res[res.length-1]]);
 			});
 		};
 		fetchMessage();
