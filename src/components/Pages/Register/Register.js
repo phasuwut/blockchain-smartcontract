@@ -82,6 +82,7 @@ const RegisterPage = () => {
 										</Row>
 									</Form.Group>
 
+
 									<Form.Group className="mb-3" controlId="formBasicEmail">
 										<Row>
 											<Col md={{ span: 2, offset: 2 }}>
@@ -157,4 +158,6 @@ const RegisterPage = () => {
 	);
 };
 
+
 export default RegisterPage;
+

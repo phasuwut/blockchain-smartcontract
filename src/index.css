@@ -91,6 +91,7 @@
 }
 
 .div-tb{
+    background-color: snow;
     width: 1200px;
     margin-left: calc(50% - 1200px/2)
 }

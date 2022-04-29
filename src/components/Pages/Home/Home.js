@@ -29,6 +29,9 @@ const HomePage = () => {
 					return <Lottery period={item} key={i} />;
 				})} 
 			</>
+			<br/>
+			<br/>
+			<br/>
 		</MasterLayout>
 	);
 };
