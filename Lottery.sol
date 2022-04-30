@@ -157,26 +157,18 @@ contract Lottery {
             // period นี้ถูก generate ไปแล้วหรือยัง
             period_result.push(period); // เก็บว่ามี period อะไรบ้าง
             for (uint256 i = 0; i < mathPow(LotteryMax); i++) {
-                 string memory lotteryNo = "";
-                 if (LotteryMax == 1){
+                    string memory lotteryNo = "";
+                if(LotteryMax==1){
                     lotteryNo = i == 0 ? "0" : uintToString(i); // fubction ที่แปลง uint to string มันมีปัญหาตจรงเลข 0
-                 }else{
-                        lotteryNo = uintToString(i);
-             
-                        string memory zero="";
-                        uint256 addZero = LotteryMax - (bytes (uintToString(i)).length ); 
-                        for(uint256 j = 0; j < addZero; j++){
-                            zero= concatenate("0", zero);
-                        } 
-                         lotteryNo=concatenate(zero, lotteryNo);
-                 }
-                
-
-                 string memory _address = concatenate(lotteryNo, period); /// PK
+                }else{
+                    lotteryNo= concatenate("0", uintToString(i)); /// PK
+                }
+               
+                string memory _address = concatenate(lotteryNo, period); /// PK
                 lotteryStruct[_address].lotteryNo = lotteryNo; // หมายเลขของหวย ที่ต้องการซื้อ
                 lotteryStruct[_address].period = period; // งวดวันที่
                 lotteryStruct[_address].amount = amountMax; // จำนวนว่ามีกี่ใบ
-                lotteryStruct[_address].listAddress = new address[](0); // address ของคนซื้อ 
+                lotteryStruct[_address].listAddress = new address[](0); // address ของคนซื้อ
 
                 listPeriod[period].push(lotteryNo); // เก็บว่าแต่ละ period มีเลขอะไรบ้าง
             }
