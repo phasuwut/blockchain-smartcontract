@@ -22,9 +22,9 @@ function App() {
 					<Route index element={<HomePage />} />
 					<Route path="search" element={<SearchPage />} />
 					<Route path="home" element={<HomePage />} />
-					<Route path="history" element={<HistoryPage />} />
+					{/* <Route path="history" element={<HistoryPage />} /> */}
 					<Route path="smart-contract/test1" element={<SmartContractTest1 />} />
-					<Route path="contact-us" element={<ContactUs  />} />
+					{/* <Route path="contact-us" element={<ContactUs  />} /> */}
 					<Route path="check" element={<Check />} />
 					<Route path="back-office" element={<BackOffice />} />
 					<Route path="my-detail" element={<MyDetail/>} />

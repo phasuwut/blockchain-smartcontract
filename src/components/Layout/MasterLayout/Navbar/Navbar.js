@@ -45,7 +45,7 @@ const MasterLayoutNavbar = () => {
 				<Nav className="mr-auto">
 					<Nav.Link href="home">Home</Nav.Link>
 					<Nav.Link href="search">search</Nav.Link>
-					<Nav.Link href="history">history</Nav.Link>
+					{/* <Nav.Link href="history">history</Nav.Link> */}
 					{/* 					<NavDropdown title="Smart Contract" id="basic-nav-dropdown">
 						<NavDropdown.Item href="smart-contract/test1">SmartContractTest1</NavDropdown.Item>
 						<NavDropdown.Item href="contact-us">Contact-us</NavDropdown.Item>
@@ -53,9 +53,9 @@ const MasterLayoutNavbar = () => {
 						<NavDropdown.Divider />
 						<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
 					</NavDropdown> */}
-					<NavDropdown title="Lottery" id="basic-nav-dropdown">
+					{/* 		<NavDropdown title="Lottery" id="basic-nav-dropdown">
 						<NavDropdown.Item href="contact-us">Contact-us</NavDropdown.Item>
-					</NavDropdown>
+					</NavDropdown> */}
 					<NavDropdown title="Tools" id="basic-nav-dropdown">
 						<NavDropdown.Item href="check">Check All</NavDropdown.Item>
 						<NavDropdown.Item href="detail-all">ข้อมูล All</NavDropdown.Item>

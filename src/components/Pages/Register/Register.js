@@ -10,17 +10,21 @@ import { buyersRegister } from "util/lottery";
 const RegisterPage = () => {
 	const [browserIsCannotMetamask, setBrowserIsCannotMetamask] = useState(false);
 	const [isRegistor, setIsRegistor] = useState(false);
+
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [myAddress, setMyAddress] = useState("");
+
 	const [status, setStatus] = useState("");
+
 	useEffect(() => {
 		const fetchData = async () => {
+			// get account, Address
 			const { ethereum } = window;
-			const getAddresd = await ethereum.request({ method: "eth_accounts" });
-			if (getAddresd.length >= 0) {
-				const MyAddress = getAddresd[0];
+			const getAddress = await ethereum.request({ method: "eth_accounts" });
+			if (getAddress.length >= 0) {
+				const MyAddress = getAddress[0];
 				const IsRegistor2 = await IsRegistor(MyAddress);
 				setIsRegistor(IsRegistor2);
 				setMyAddress(MyAddress);

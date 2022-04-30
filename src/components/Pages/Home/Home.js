@@ -6,32 +6,28 @@ import { getPeriodAll } from "util/lottery";
 
 const HomePage = () => {
 	const [periodAll, setPeriodAll] = useState([]);
+	const [periodLast, setPeriodLast] = useState([]);
 
-	//called only once
 	useEffect(() => {
-		const fetchMessage = () => {
+		const fetch = () => {
 			getPeriodAll().then((res) => {
-				//console.log(res);
-			
-				setPeriodAll([res[res.length-1]]);
+				setPeriodAll(res);
+				setPeriodLast([res[res.length - 1]]);
 			});
 		};
-		fetchMessage();
+		fetch();
 	}, []);
 
 	return (
 		<MasterLayout>
 			<>
-				{/* <div>Home</div> */}
-				<br/>
-				<h1>รายการซื้อ - ขาย ล็อตเตอรี่ </h1>
-			 	{periodAll.map((item, i) => {
+				<br />
+				<h1 className="text-center">{`รายการซื้อ - ขาย ล็อตเตอรี่ งวด ${periodLast[0]}`}</h1>
+				{periodLast.map((item, i) => {
 					return <Lottery period={item} key={i} />;
-				})} 
+				})}
 			</>
-			<br/>
-			<br/>
-			<br/>
+	
 		</MasterLayout>
 	);
 };
