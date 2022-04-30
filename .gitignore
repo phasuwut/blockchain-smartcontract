@@ -1,0 +1,15 @@
+node_modules
+
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
+
+*node_modules
+/node_modules/
+/node_modules
+node_modules/
+Deploy/Version-1/node_modules
