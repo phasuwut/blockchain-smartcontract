@@ -17,7 +17,7 @@ contract Lottery {
     // กำหนดค่า
     uint256 private amountMax = 10; //เลขนั้นมีกี่ีใบ
     uint256 private limit = 5; //ซื้อได้สูงสุด 5 ใบ
-    uint256 private LotteryMax = 4; //จำนวนตัวเลขของหวย ต่อเลข => (3 ==> 000-999), (2 ==> 00- 99)
+    uint256 private LotteryMax = 2; //จำนวนตัวเลขของหวย ต่อเลข => (3 ==> 000-999), (2 ==> 00- 99)
     uint256 private price = 80 gwei; //ราคาหวย
     address public manager;
 
