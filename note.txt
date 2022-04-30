@@ -20,8 +20,8 @@ step -1
     => create file  scripts/deploy.js
 
     npx hardhat run scripts/deploy.js --network ropsten
+--- Contract deployed to address: 0xC538C67cBFAC2d97C3593dc24A80f50d00241987
 
- --- Contract deployed to address: 0xed72fF942DBb8eE80cec41DbD7d7ba7D9FB45563
 
 step2
      => create file  scripts/interact.js
@@ -40,7 +40,7 @@ step 3
     
     -> edit hardhat.config.js
 
-     npx hardhat verify --network ropsten 0xed72fF942DBb8eE80cec41DbD7d7ba7D9FB45563  
+     npx hardhat verify --network ropsten 0xC538C67cBFAC2d97C3593dc24A80f50d00241987  
 
 
-https://ropsten.etherscan.io/address/0xed72fF942DBb8eE80cec41DbD7d7ba7D9FB45563#code
+-- https://ropsten.etherscan.io/address/0xC538C67cBFAC2d97C3593dc24A80f50d00241987#code
