@@ -21,7 +21,8 @@ step -1
 
     npx hardhat run scripts/deploy.js --network ropsten
 
-    -- Contract deployed to address: 0x92547209Bd7dC32B353491455161a16B55aBEBF8
+    -- Contract deployed to address: 0x92547209Bd7dC32B353491455161a16B55aBEBF8 => 4
+    --  Contract deployed to address: 0x62DEf56898355995283e35Ab5c964794D3Ff96Fa => 2
 
 step2
      => create file  scripts/interact.js
