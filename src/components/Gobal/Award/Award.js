@@ -75,7 +75,7 @@ const Award = () => {
 		<Wepper>
 	
 
-			<Table bordered hover responsive striped>
+			<CustomTable bordered hover responsive striped>
 				<thead>
 					<tr>
 						<th>#</th>
@@ -122,7 +122,7 @@ const Award = () => {
 						);
 					})}
 				</tbody>
-			</Table>
+			</CustomTable>
 
 			
 			{addressTransactions !== "" ? (
@@ -157,5 +157,7 @@ const Award = () => {
 };
 
 const Wepper = styled.div``;
-
+const CustomTable = styled(Table)`
+	background-color: snow;
+`;
 export default Award;

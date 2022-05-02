@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAward, getLotteryDetailByAddress, getPeriodDetail } from "util/lottery";
 
 import { Table } from "react-bootstrap";
+import styled from "styled-components";
 
 const Lottery = ({ period }) => {
 	const [isAwarding, setIsAwarding] = useState(true);
@@ -29,37 +30,43 @@ const Lottery = ({ period }) => {
 	}, [period]);
 
 	return (
-		<Table>
-			<thead>
-				<tr>
-					<th>Number</th>
-					<th>Amount</th>
-					<th>Address</th>
-					<th>Address ของคนที่ซื้อไป</th>
-					<th>ออกรางวัลไปยัง</th>
-				</tr>
-			</thead>
-			<tbody>
-				{listLottery.map((item, i) => {
-					return (
-						<tr key={i}>
-							<td>{item.number}</td>
-							<td>{item.amount}</td>
-							<td>{item.address}</td>
-							<td>
-								<ul>
-									{item.listAddress.map((item2, j) => {
-										return <li key={j}>{item2}</li>;
-									})}
-								</ul>
-							</td>
-							<td>{isAwarding.toString()}</td>
-						</tr>
-					);
-				})}
-			</tbody>
-		</Table>
+		<Wapper>
+			<p>{`สถานะการออกรางวัล ${isAwarding ? "ออกรางวัลไปแล้ว" : "ยังไม่ได้ออกรางวัล"}`}</p>
+			<CustomTable bordered hover responsive striped>
+				<thead>
+					<tr>
+						<th>หมายเลขล็อตเตอรี่</th>
+						<th>จำนวนคงเหลือ (ใบ)</th>
+						<th>Address ล็อตเตอรี่</th>
+						<th>Address ผู้ซื้อ</th>
+					</tr>
+				</thead>
+				<tbody>
+					{listLottery.map((item, i) => {
+						return (
+							<tr key={i}>
+								<td>{item.number}</td>
+								<td>{item.amount}</td>
+								<td>{item.address}</td>
+								<td>
+									<ul>
+										{item.listAddress.map((item2, j) => {
+											return <li key={j}>{item2}</li>;
+										})}
+									</ul>
+								</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</CustomTable>
+		</Wapper>
 	);
 };
-
+const CustomTable = styled(Table)`
+	background-color: snow;
+`;
+const Wapper = styled.div`
+	background-color: snow;
+`;
 export default Lottery;
