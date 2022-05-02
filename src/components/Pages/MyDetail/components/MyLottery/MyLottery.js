@@ -51,7 +51,7 @@ const MyLottery = ({ myListLottery }) => {
 								</Flex>
 							</CustomAccordionHeader>
 							<Accordion.Body>
-								<Table bordered hover responsive striped>
+								<CustomTable bordered hover responsive striped>
 									<thead>
 										<tr>
 											<th>#</th>
@@ -71,7 +71,7 @@ const MyLottery = ({ myListLottery }) => {
 											);
 										})}
 									</tbody>
-								</Table>
+								</CustomTable>
 							</Accordion.Body>
 						</Accordion.Item>
 					);
@@ -94,5 +94,9 @@ const CustomAccordion = styled(Accordion)`
 const Wapper = styled.div`
 	display: flex;
 	justify-content: center;
+`;
+
+const CustomTable = styled(Table)`
+	background-color: snow;
 `;
 export default MyLottery;
