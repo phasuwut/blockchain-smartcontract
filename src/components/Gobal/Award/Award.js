@@ -2,10 +2,11 @@ import { Accordion, Button, Modal, Table } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
 import { awarding, getAward, getPeriodAll, lotteryManeger } from "util/lottery";
 
+import Loading from "components/Gobal/Loading/Loading";
 import { getCurrentWalletConnected } from "lib/interact";
 import styled from "styled-components";
 
-const Award = () => {
+const Award = ({ isShowButtonAwarding = false }) => {
 	const [periodAll, setPeriodAll] = useState([]);
 	const [listAward, setListAward] = useState([]);
 	const [isManeger, setIsManeger] = useState(false);
@@ -14,6 +15,8 @@ const Award = () => {
 	const [myAddress, setMyAddress] = useState("");
 	const [status, setStatus] = useState("");
 	const [addressTransactions, setAddressTransactions] = useState("");
+
+	const [isLoading, setLsLoading] = useState(true);
 
 	useMemo(() => {
 		const fetch = async () => {
@@ -50,6 +53,7 @@ const Award = () => {
 					});
 				}
 				setListAward(arr);
+				setLsLoading(false);
 			}
 		};
 		fetch();
@@ -70,88 +74,95 @@ const Award = () => {
 		setSelectShowAddress(i);
 	};
 
-
 	return (
 		<Wepper>
-	
-
-			<CustomTable bordered hover responsive striped>
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Period</th>
-						<th>จำนวนเงินที่ได้ต่องวด (Wei)</th>
-						<th>แต่ละ Address จะได้จะนวนเงินเท่าไหร่ (Wei)</th>
-						<th>ออกรางวัลไปยัง</th>
-						<th>เลขที่ออก</th>
-						<th>Address ที่ถูกรางวัล</th>
-						{isManeger ? <th> ออกสลาก</th> : null}
-					</tr>
-				</thead>
-				<tbody>
-					{listAward.map((item, i) => {
-						return (
-							<tr key={i}>
-								<td>{i + 1}</td>
-								<td>{item.period}</td>
-								<td>{item.Balance}</td>
-								<td>{item.BalancePerAddress}</td>
-								<td>{item.isAwarding.toString()}</td>
-								<td>{item.lotteryStruct}</td>
-								<td>
-									<Button
-										variant="primary"
-										onClick={() => handleShow(i)}
-										disabled={!item.isAwarding}
-									>
-										กดเพื่อดูว่าใครถูกบ้าง
-									</Button>
-								</td>
-								{isManeger ? (
-									<td>
-										<Button
-											variant="primary"
-											disabled={item.isAwarding}
-											onClick={() => handleAwarding(item)}
-										>
-											ออกสลาก
-										</Button>
-									</td>
-								) : null}
+			{isLoading ? (
+				<Loading />
+			) : (
+				<>
+					<CustomTable bordered hover responsive striped>
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Period</th>
+								<th>จำนวนเงินที่ได้ต่องวด (Wei)</th>
+								<th>แต่ละ Address จะได้จะนวนเงินเท่าไหร่ (Wei)</th>
+								<th>ออกรางวัลไปยัง</th>
+								<th>เลขที่ออก</th>
+								<th>Address ที่ถูกรางวัล</th>
+								{isShowButtonAwarding ? <>{isManeger ? <th> ออกสลาก</th> : null}</> : null}
 							</tr>
-						);
-					})}
-				</tbody>
-			</CustomTable>
+						</thead>
+						<tbody>
+							{listAward.map((item, i) => {
+								return (
+									<tr key={i}>
+										<td>{i + 1}</td>
+										<td>{item.period}</td>
+										<td>{item.Balance}</td>
+										<td>{item.BalancePerAddress}</td>
+										<td>{item.isAwarding.toString()}</td>
+										<td>{item.lotteryStruct}</td>
+										<td>
+											<Button
+												variant="primary"
+												onClick={() => handleShow(i)}
+												disabled={!item.isAwarding}
+											>
+												กดเพื่อดูว่าใครถูกบ้าง
+											</Button>
+										</td>
 
-			
-			{addressTransactions !== "" ? (
-				<div>
-					<h6>Transaction การออกรางวัล</h6>
-					<p id="status">{status.status}</p>
-				</div>
-			) : null}
-
-			{selectShowAddress !== "" || listAward.length1 == 0 ? (
-				<Modal show={show} onHide={handleClose}>
-					<Modal.Header closeButton>
-						<Modal.Title>Address ที่ถูกรางวัล</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						<ui>
-							{listAward[selectShowAddress].listAddress.map((item2, j) => {
-								return <li key={j}>{item2}</li>;
+										{isShowButtonAwarding ? (
+											<>
+												{isManeger ? (
+													<td>
+														<Button
+															variant="primary"
+															disabled={item.isAwarding}
+															onClick={() => handleAwarding(item)}
+														>
+															ออกสลาก
+														</Button>
+													</td>
+												) : null}
+											</>
+										) : null}
+									</tr>
+								);
 							})}
-						</ui>
-					</Modal.Body>
-					<Modal.Footer>
-						<Button variant="secondary" onClick={handleClose}>
-							Close
-						</Button>
-					</Modal.Footer>
-				</Modal>
-			) : null}
-			<hr />
+						</tbody>
+					</CustomTable>
+
+					{addressTransactions !== "" ? (
+						<div>
+							<h6>Transaction การออกรางวัล</h6>
+							<p id="status">{status.status}</p>
+						</div>
+					) : null}
+
+					{selectShowAddress !== "" || listAward.length1 == 0 ? (
+						<Modal show={show} onHide={handleClose}>
+							<Modal.Header closeButton>
+								<Modal.Title>Address ที่ถูกรางวัล</Modal.Title>
+							</Modal.Header>
+							<Modal.Body>
+								<ui>
+									{listAward[selectShowAddress].listAddress.map((item2, j) => {
+										return <li key={j}>{item2}</li>;
+									})}
+								</ui>
+							</Modal.Body>
+							<Modal.Footer>
+								<Button variant="secondary" onClick={handleClose}>
+									Close
+								</Button>
+							</Modal.Footer>
+						</Modal>
+					) : null}
+					<hr />
+				</>
+			)}
 		</Wepper>
 	);
 };

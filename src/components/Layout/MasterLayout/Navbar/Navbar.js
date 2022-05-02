@@ -46,6 +46,7 @@ const MasterLayoutNavbar = () => {
 					<Nav.Link href="home">Home</Nav.Link>
 					<Nav.Link href="search">Search</Nav.Link>
 					<Nav.Link href="history">ประวัติการซื้อของฉัน</Nav.Link>
+					<Nav.Link href="award">การออกรางวัล</Nav.Link>
 					<NavDropdown title="Tools" id="basic-nav-dropdown">
 						<NavDropdown.Item href="detail-all">ข้อมูล All</NavDropdown.Item>
 						<NavDropdown.Item href="back-office">BackOffice</NavDropdown.Item>

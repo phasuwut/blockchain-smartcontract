@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { getMyDetailBuyer, getMyLotteryByPeriod } from "util/lottery";
 
 import Center from "components/Gobal/Center/Center";
+import Loading from "components/Gobal/Loading/Loading";
 import MasterLayout from "components/Layout/MasterLayout/MasterLayout";
 import Select from "react-select";
 import { Table } from "react-bootstrap";
@@ -15,6 +16,7 @@ const MyHistory = () => {
 	const [myPreiod, setMyPreiod] = useState([]);
 	const [myListLottery, setMyListLottery] = useState([]);
 	const [selectPreiod, setSelectPreiod] = useState("");
+	const [isLoading, setLsLoading] = useState(true);
 
 	useMemo(() => {
 		const fetchData = () => {
@@ -62,6 +64,7 @@ const MyHistory = () => {
 					arr2.push({ number: item, address: `${selectPreiod}${item}` });
 				});
 				setMyListLottery(arr2);
+				setLsLoading(false);
 			}
 		};
 		if (myPreiod.length > 0) {
@@ -71,65 +74,71 @@ const MyHistory = () => {
 
 	return (
 		<MasterLayout>
-			{browserIsCannotMetamask ? (
+			{isLoading ? (
+				<Loading />
+			) : (
 				<>
-					{isCannotMetamask ? (
+					{browserIsCannotMetamask ? (
 						<>
-							<div className="flex justify-center">
-								<div className="w-11/12">
-									<div className="w-full">
-										<br />
-										<h4 style={{ textAlign: "center" }}>ประวัติการซื้อของฉัน</h4>
+							{isCannotMetamask ? (
+								<>
+									<div className="flex justify-center">
+										<div className="w-11/12">
+											<div className="w-full">
+												<br />
+												<h4 style={{ textAlign: "center" }}>ประวัติการซื้อของฉัน</h4>
 
-										{myPreiod.length > 0 ? (
-											<>
-												<div className="flex justify-between ">
-													<p>{`งวด ${selectPreiod}`}</p>
-													<Select
-														options={myPreiod}
-														defaultValue={myPreiod[myPreiod.length - 1]}
-														onChange={(values) => {
-															setSelectPreiod(values.value);
-														}}
-													/>
-												</div>
+												{myPreiod.length > 0 ? (
+													<>
+														<div className="flex justify-between ">
+															<p>{`งวด ${selectPreiod}`}</p>
+															<Select
+																options={myPreiod}
+																defaultValue={myPreiod[myPreiod.length - 1]}
+																onChange={(values) => {
+																	setSelectPreiod(values.value);
+																}}
+															/>
+														</div>
 
-												<CustomTable striped bordered hover>
-													<thead>
-														<tr>
-															<th>#</th>
-															<th>เลข</th>
-															<th>Address</th>
-														</tr>
-													</thead>
-													<tbody>
-														{myListLottery.map((item, i) => {
-															return (
-																<tr key={i}>
-																	<td>{i + 1}</td>
-																	<td>{item.number}</td>
-																	<td>{item.address}</td>
+														<CustomTable striped bordered hover>
+															<thead>
+																<tr>
+																	<th>#</th>
+																	<th>เลข</th>
+																	<th>Address</th>
 																</tr>
-															);
-														})}
-													</tbody>
-												</CustomTable>
-											</>
-										) : null}
+															</thead>
+															<tbody>
+																{myListLottery.map((item, i) => {
+																	return (
+																		<tr key={i}>
+																			<td>{i + 1}</td>
+																			<td>{item.number}</td>
+																			<td>{item.address}</td>
+																		</tr>
+																	);
+																})}
+															</tbody>
+														</CustomTable>
+													</>
+												) : null}
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
+								</>
+							) : (
+								<Center>
+									<h1> Please Connect metamask</h1>
+								</Center>
+							)}
 						</>
 					) : (
 						<Center>
-							<h1> Please Connect metamask</h1>
+							<h1> Please change browser</h1>
 						</Center>
 					)}
 				</>
-			) : (
-				<Center>
-					<h1> Please change browser</h1>
-				</Center>
 			)}
 		</MasterLayout>
 	);

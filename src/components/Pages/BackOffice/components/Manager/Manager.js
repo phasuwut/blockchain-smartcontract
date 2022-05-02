@@ -22,6 +22,7 @@ const Manager = ({ myAddress }) => {
 
 	return (
 		<div>
+			<br/>
 			<div className="flex justify-center">
 				<div className="w-11/12">
 					<div className="w-full">
@@ -75,7 +76,7 @@ const Manager = ({ myAddress }) => {
 										</Flex>
 									</CustomAccordionHeader>
 									<Accordion.Body>
-										<Award />
+										<Award isShowButtonAwarding={true}/>
 									</Accordion.Body>
 								</Accordion.Item>
 								<hr />

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import Award from "components/Pages/Award/Award"
 import BackOffice from "components/Pages/BackOffice/BackOffice";
 import DetailEtc from "components/Pages/DetailEtc/DetailEtc"
 import HomePage from "components/Pages/Home/Home";
@@ -10,7 +11,7 @@ import Register from "./components/Pages/Register/Register";
 import SearchPage from "components/Pages/Search/Search";
 
 /* 
-	import Award from "components/Pages/Award/Award"
+	
 	import Check from "components/Pages/Check/Check";
 	import ContactUs  from "components/Pages/ContactUs/ContactUs";
 	import HistoryPage from "components/Pages/History/History";
@@ -33,6 +34,7 @@ function App() {
 					<Route path="*" element={<Page404Page />} />
 					<Route path="register" element={<Register />} />
 					<Route path="history" element={<MyHistory  />} />
+					<Route path="award" element={<Award  />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
