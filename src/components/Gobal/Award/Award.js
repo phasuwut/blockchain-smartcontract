@@ -1,4 +1,4 @@
-import { Button, Modal, Table } from "react-bootstrap";
+import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
 import { awarding, getAward, getBalance, getPeriodAll, lotteryManeger } from "util/lottery";
 
@@ -9,6 +9,7 @@ import styled from "styled-components";
 const Award = ({ isShowButtonAwarding = false }) => {
 	const [periodAll, setPeriodAll] = useState([]);
 	const [listAward, setListAward] = useState([]);
+	const [showListAward, setShowListAward] = useState([]);
 	const [isManeger, setIsManeger] = useState(false);
 
 	const [manager, setManeger] = useState("");
@@ -48,11 +49,13 @@ const Award = ({ isShowButtonAwarding = false }) => {
 					BalancePerAddress: award.BalancePerAddress,
 					isAwarding: award.isAwarding,
 					listAddress: award.listAddress,
-					lotteryStruct: award.lotteryStruct, // เลขที่ออก
+					//lotteryStruct: award.lotteryStruct, // เลขที่ออก
+					lotteryStruct: award.lotteryStruct.replace(periodAll[i], ""),
 					balance: balance,
 				});
 			}
 			setListAward(arr);
+			setShowListAward(arr);
 			setLsLoading(false);
 		};
 		if (periodAll.length > 0) {
@@ -75,12 +78,33 @@ const Award = ({ isShowButtonAwarding = false }) => {
 		setSelectShowAddress(i);
 	};
 
+	const [search, setSearch] = useState("");
+	const handleChange = (e) => {
+		setSearch(e.target.value);
+		setShowListAward(listAward.filter((item) => item.period.includes(e.target.value)));
+	};
+
 	return (
 		<Wepper>
 			{isLoading ? (
 				<Loading />
 			) : (
 				<>
+					<Row>
+						<Col xs="2">
+							<label>Search Period</label>
+						</Col>
+						<Col xs="10">
+							<input
+								type="text"
+								value={search}
+								placeholder="Search Period"
+								onChange={handleChange}
+								className="w-full"
+							/>
+						</Col>
+					</Row>
+					<br />
 					<CustomTable bordered hover responsive striped>
 						<thead>
 							<tr>
@@ -96,16 +120,16 @@ const Award = ({ isShowButtonAwarding = false }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{listAward.map((item, i) => {
+							{showListAward.map((item, i) => {
 								return (
 									<tr key={i}>
 										<td>{i + 1}</td>
 										<td>{item.period}</td>
 										<td>{parseInt(item.balance).toLocaleString()}</td>
-										<td>{parseInt(item.Balance).toLocaleString()}</td> 
-										<td>{parseInt(item.BalancePerAddress).toLocaleString()}</td> 
-										<td>{`${item.isAwarding? "ออกรางวัลไปแล้ว" : "ยังไม่ได้ออกรางวัล"}`}</td>
-										<td>{item.lotteryStruct}</td>
+										<td>{parseInt(item.Balance).toLocaleString()}</td>
+										<td>{parseInt(item.BalancePerAddress).toLocaleString()}</td>
+										<td>{`${item.isAwarding ? "ออกรางวัลไปแล้ว" : "ยังไม่ได้ออกรางวัล"}`}</td>
+										<td>{item.lotteryStruct !== "" ? item.lotteryStruct : "-"}</td>
 										<td>
 											<Button
 												variant="primary"
