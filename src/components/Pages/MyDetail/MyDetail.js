@@ -1,5 +1,5 @@
-import { Accordion, Button, Table } from "react-bootstrap";
-import React, { useEffect, useMemo, useState } from "react";
+import { Accordion, Table } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { getMyDetailBuyer, getMyLotteryByPeriod } from "util/lottery";
 
 import Center from "components/Gobal/Center/Center";
@@ -73,126 +73,135 @@ const MyDetail = () => {
 					<>
 						{isCannotMetamask ? (
 							<div>
-								<h1 style={{textAlign: "center"}}> ข้อมูลของฉัน</h1>
+								<hr />
+								<div className="flex justify-center">
+									<div className="w-11/12">
+										<div className="w-full">
+											<h1 style={{ textAlign: "center" }}> ข้อมูลของฉัน</h1>
 
-								<Accordion defaultActiveKey="0">
-									<Accordion.Item eventKey="0">
-										<CustomAccordionHeader>
-											<Flex
-												onClick={() => {
-													console.log("0");
-													if (showAccordion === "0") {
-														setShowAccordion("");
-													} else {
-														setShowAccordion("0");
-													}
-												}}
-											>
-												<h4>ข้อมูลต่างๆของฉัน</h4>
-												{showAccordion === "0" ? (
-													<svg
-														xmlns="http://www.w3.org/2000/svg"
-														width="50"
-														height="50"
-														fill="currentColor"
-														class="bi bi-arrow-down"
-														viewBox="0 0 16 16"
-													>
-														<path
-															fill-rule="evenodd"
-															d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"
-														/>
-													</svg>
-												) : (
-													<svg
-														xmlns="http://www.w3.org/2000/svg"
-														width="50"
-														height="50"
-														fill="currentColor"
-														class="bi bi-arrow-up"
-														viewBox="0 0 16 16"
-													>
-														<path
-															fill-rule="evenodd"
-															d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"
-														/>
-													</svg>
-												)}
-											</Flex>
-										</CustomAccordionHeader>
-										<Accordion.Body>
-											<Table bordered hover responsive striped>
-												<tr>
-													<td>myAddress</td>
-													<td>{myAddress}</td>
-												</tr>
+											<Accordion defaultActiveKey="0">
+												<Accordion.Item eventKey="0">
+													<CustomAccordionHeader>
+														<Flex
+															onClick={() => {
+																console.log("0");
+																if (showAccordion === "0") {
+																	setShowAccordion("");
+																} else {
+																	setShowAccordion("0");
+																}
+															}}
+														>
+															<h4>ข้อมูลต่างๆของฉัน</h4>
+															{showAccordion === "0" ? (
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	width="50"
+																	height="50"
+																	fill="currentColor"
+																	class="bi bi-arrow-down"
+																	viewBox="0 0 16 16"
+																>
+																	<path
+																		fill-rule="evenodd"
+																		d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"
+																	/>
+																</svg>
+															) : (
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	width="50"
+																	height="50"
+																	fill="currentColor"
+																	class="bi bi-arrow-up"
+																	viewBox="0 0 16 16"
+																>
+																	<path
+																		fill-rule="evenodd"
+																		d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"
+																	/>
+																</svg>
+															)}
+														</Flex>
+													</CustomAccordionHeader>
+													<Accordion.Body>
+														<CustomTable bordered hover responsive striped>
+															<tbody>
+																<tr>
+																	<td>myAddress</td>
+																	<td>{myAddress}</td>
+																</tr>
 
-												<tr>
-													<td>First name</td>
-													<td>{myDetail[0]}</td>
-												</tr>
-												<tr>
-													<td>Last name </td>
-													<td>{myDetail[1]}</td>
-												</tr>
-												<tr>
-													<td>Email</td>
-													<td>{myDetail[2]}</td>
-												</tr>
-											</Table>
-										</Accordion.Body>
-									</Accordion.Item>
-									<hr />
+																<tr>
+																	<td>First name</td>
+																	<td>{myDetail[0]}</td>
+																</tr>
+																<tr>
+																	<td>Last name </td>
+																	<td>{myDetail[1]}</td>
+																</tr>
+																<tr>
+																	<td>Email</td>
+																	<td>{myDetail[2]}</td>
+																</tr>
+															</tbody>
+														</CustomTable>
+													</Accordion.Body>
+												</Accordion.Item>
+												<hr />
 
-									<Accordion.Item eventKey="1">
-										<CustomAccordionHeader>
-											<Flex
-												onClick={() => {
-													console.log("1");
-													if (showAccordion === "1") {
-														setShowAccordion("");
-													} else {
-														setShowAccordion("1");
-													}
-												}}
-											>
-												<h4>ข้อมูลการซื้อหวยของฉัน</h4>
-												{showAccordion === "1" ? (
-													<svg
-														xmlns="http://www.w3.org/2000/svg"
-														width="50"
-														height="50"
-														fill="currentColor"
-														class="bi bi-arrow-down"
-														viewBox="0 0 16 16"
-													>
-														<path
-															fill-rule="evenodd"
-															d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"
-														/>
-													</svg>
-												) : (
-													<svg
-														xmlns="http://www.w3.org/2000/svg"
-														width="50"
-														height="50"
-														fill="currentColor"
-														class="bi bi-arrow-up"
-														viewBox="0 0 16 16"
-													>
-														<path
-															fill-rule="evenodd"
-															d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"
-														/>
-													</svg>
-												)}
-											</Flex>
-										</CustomAccordionHeader>
-										<Accordion.Body>
-											<MyLottery myListLottery={myListLottery} />
-										</Accordion.Body>
-									</Accordion.Item>
-								</Accordion>
+												<Accordion.Item eventKey="1">
+													<CustomAccordionHeader>
+														<Flex
+															onClick={() => {
+																console.log("1");
+																if (showAccordion === "1") {
+																	setShowAccordion("");
+																} else {
+																	setShowAccordion("1");
+																}
+															}}
+														>
+															<h4>ข้อมูลการซื้อหวยของฉัน</h4>
+															{showAccordion === "1" ? (
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	width="50"
+																	height="50"
+																	fill="currentColor"
+																	class="bi bi-arrow-down"
+																	viewBox="0 0 16 16"
+																>
+																	<path
+																		fill-rule="evenodd"
+																		d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"
+																	/>
+																</svg>
+															) : (
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	width="50"
+																	height="50"
+																	fill="currentColor"
+																	class="bi bi-arrow-up"
+																	viewBox="0 0 16 16"
+																>
+																	<path
+																		fill-rule="evenodd"
+																		d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"
+																	/>
+																</svg>
+															)}
+														</Flex>
+													</CustomAccordionHeader>
+													<Accordion.Body>
+														<MyLottery myListLottery={myListLottery} />
+													</Accordion.Body>
+												</Accordion.Item>
+											</Accordion>
+										</div>
+									</div>
+								</div>
 							</div>
 						) : (
 							<Center>
@@ -216,5 +225,7 @@ const CustomAccordionHeader = styled(Accordion.Header)`
 		width: 100%;
 	}
 `;
-
+const CustomTable = styled(Table)`
+	background-color: snow;
+`;
 export default MyDetail;
