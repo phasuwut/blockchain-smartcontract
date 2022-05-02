@@ -1,6 +1,6 @@
-import { Accordion, Button, Modal, Table } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 import React, { useEffect, useMemo, useState } from "react";
-import { awarding, getAward, getPeriodAll, lotteryManeger } from "util/lottery";
+import { awarding, getAward, getBalance, getPeriodAll, lotteryManeger } from "util/lottery";
 
 import Loading from "components/Gobal/Loading/Loading";
 import { getCurrentWalletConnected } from "lib/interact";
@@ -38,25 +38,26 @@ const Award = ({ isShowButtonAwarding = false }) => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			if (periodAll.length > 0) {
-				const arr = [];
-				for (let i = 0; i < periodAll.length; i++) {
-					const award = await getAward(periodAll[i]);
-
-					arr.push({
-						period: periodAll[i],
-						Balance: award.Balance,
-						BalancePerAddress: award.BalancePerAddress,
-						isAwarding: award.isAwarding,
-						listAddress: award.listAddress,
-						lotteryStruct: award.lotteryStruct, // เลขที่ออก
-					});
-				}
-				setListAward(arr);
-				setLsLoading(false);
+			const arr = [];
+			for (let i = 0; i < periodAll.length; i++) {
+				const award = await getAward(periodAll[i]);
+				const balance = await getBalance(periodAll[i]);
+				arr.push({
+					period: periodAll[i],
+					Balance: award.Balance,
+					BalancePerAddress: award.BalancePerAddress,
+					isAwarding: award.isAwarding,
+					listAddress: award.listAddress,
+					lotteryStruct: award.lotteryStruct, // เลขที่ออก
+					balance: balance,
+				});
 			}
+			setListAward(arr);
+			setLsLoading(false);
 		};
-		fetch();
+		if (periodAll.length > 0) {
+			fetch();
+		}
 	}, [periodAll]);
 	const handleAwarding = (item) => {
 		awarding(myAddress, item.period).then((res) => {
@@ -85,6 +86,7 @@ const Award = ({ isShowButtonAwarding = false }) => {
 							<tr>
 								<th>#</th>
 								<th>Period</th>
+								<th>งวดนี้มีเงินกลองกลางอยู่เท่าไหร่ (Wei)</th>
 								<th>จำนวนเงินที่ได้ต่องวด (Wei)</th>
 								<th>แต่ละ Address จะได้จะนวนเงินเท่าไหร่ (Wei)</th>
 								<th>ออกรางวัลไปยัง</th>
@@ -99,9 +101,10 @@ const Award = ({ isShowButtonAwarding = false }) => {
 									<tr key={i}>
 										<td>{i + 1}</td>
 										<td>{item.period}</td>
-										<td>{item.Balance}</td>
-										<td>{item.BalancePerAddress}</td>
-										<td>{item.isAwarding.toString()}</td>
+										<td>{parseInt(item.balance).toLocaleString()}</td>
+										<td>{parseInt(item.Balance).toLocaleString()}</td> 
+										<td>{parseInt(item.BalancePerAddress).toLocaleString()}</td> 
+										<td>{`${item.isAwarding? "ออกรางวัลไปแล้ว" : "ยังไม่ได้ออกรางวัล"}`}</td>
 										<td>{item.lotteryStruct}</td>
 										<td>
 											<Button
@@ -112,7 +115,6 @@ const Award = ({ isShowButtonAwarding = false }) => {
 												กดเพื่อดูว่าใครถูกบ้าง
 											</Button>
 										</td>
-
 										{isShowButtonAwarding ? (
 											<>
 												{isManeger ? (

@@ -61,7 +61,7 @@ const MyHistory = () => {
 				const myNumberLottery = await getMyLotteryByPeriod(myAddress, selectPreiod);
 				const arr2 = [];
 				(myNumberLottery || []).map((item) => {
-					arr2.push({ number: item, address: `${selectPreiod}${item}` });
+					arr2.push({ number: item, address: `${item}${selectPreiod}` });
 				});
 				setMyListLottery(arr2);
 				setLsLoading(false);
@@ -96,6 +96,8 @@ const MyHistory = () => {
 																options={myPreiod}
 																defaultValue={myPreiod[myPreiod.length - 1]}
 																onChange={(values) => {
+																	console.log("values.value")
+																	console.log(values.value)
 																	setSelectPreiod(values.value);
 																}}
 															/>

@@ -211,6 +211,14 @@ export const awarding = async (myAddress, period) => {
 	}
 };
 
+ //  เงินกลองกลางของแต่าละงวด
+export const getBalance = async (period) => {
+	const message = await lotteryContract.methods.getBalance(period).call();
+	return message;
+};
+
+
+
 // bug
 export const getMyaddress = async (address) => {
 	/* 	const transactionParameters = {

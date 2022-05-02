@@ -5,12 +5,12 @@ import React from "react";
 const Award = () => {
 	return (
 		<MasterLayout>
-      <br/>
+			<br />
 
 			<div className="flex justify-center">
 				<div className="w-11/12">
 					<div className="w-full">
-            <h1 className="text-center">การออกรางวัล</h1>
+						<h1 className="text-center">การออกรางวัล</h1>
 						<Awarding />
 					</div>
 				</div>
