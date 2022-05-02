@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getAward, getLotteryDetailByAddress, getPeriodDetail } from "util/lottery";
 
+import Center from "components/Gobal/Center/Center";
 import { Table } from "react-bootstrap";
+import styled from "styled-components";
 
 const Lottery = ({ period }) => {
 	const [isAwarding, setIsAwarding] = useState(true);
@@ -34,40 +36,45 @@ const Lottery = ({ period }) => {
 	return (
 		<div>
 			<hr />
-
-			<div className="div-tb">
-				<p>{`สถานะการออกรางวัล ${isAwarding}`}</p>
-				<Table striped bordered hover>
-					<thead>
-						<tr>
-							<th>หมายเลขล็อตเตอรี่</th>
-							<th>จำนวนคงเหลือ</th>
-							<th>Address ล็อตเตอรี่</th>
-							<th>Address ผู้ซื้อ</th>
-						</tr>
-					</thead>
-					<tbody>
-						{listLottery.map((item, i) => {
-							return (
-								<tr key={i}>
-									<td>{item.number}</td>
-									<td>{item.amount}</td>
-									<td>{item.address}</td>
-									<td>
-										<ul>
-											{item.listAddress.map((item2, j) => {
-												return <li key={j}>{item2}</li>;
-											})}
-										</ul>
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</Table>
-			</div>
+			<Center>
+				<div>
+					<p>{`สถานะการออกรางวัล ${isAwarding ? "ออกรางวัลไปแล้ว":"ยังไม่ได้ออกรางวัล"}`}</p>
+					<CustomTable striped bordered hover>
+						<thead>
+							<tr>
+								<th>หมายเลขล็อตเตอรี่</th>
+								<th>จำนวนคงเหลือ (ใบ)</th>
+								<th>Address ล็อตเตอรี่</th>
+								<th>Address ผู้ซื้อ</th>
+							</tr>
+						</thead>
+						<tbody>
+							{listLottery.map((item, i) => {
+								return (
+									<tr key={i}>
+										<td>{item.number}</td>
+										<td>{item.amount}</td>
+										<td>{item.address}</td>
+										<td>
+											<ul>
+												{item.listAddress.map((item2, j) => {
+													return <li key={j}>{item2}</li>;
+												})}
+											</ul>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</CustomTable>
+				</div>
+			</Center>
 		</div>
 	);
 };
+
+const CustomTable = styled(Table)`
+	background-color: snow;
+`;
 
 export default Lottery;
