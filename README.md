@@ -9,15 +9,14 @@ frist
 3. yarn dev
 
 # https://localcoder.org/react-app-runs-locally-crashes-when-on-heroku-error-code-h10
-heroku deploy มันต้องใช้  "start": "serve -s build", ในการdeploy 
-ดังนั้นเลยใช้  "dev": "react-app-rewired start" พีื ตอนdevแทน
+heroku deploy มันต้องใช้  "start": "serve -s build"  <=ในการdeploy 
+ดังนั้นเลยใช้  "dev": "react-app-rewired start"  ตอนที่จะ dev แทน
 
 Production และ uat จะเชื่อมต่อกับ Heroku
 develop จะเอาไว้เขียน code หลัก
 
 build
 yarn build
-
 
 
 Heroku 
