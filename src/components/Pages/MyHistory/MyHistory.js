@@ -16,7 +16,9 @@ const MyHistory = () => {
 	const [myPreiod, setMyPreiod] = useState([]);
 	const [myListLottery, setMyListLottery] = useState([]);
 	const [selectPreiod, setSelectPreiod] = useState("");
+
 	const [isLoading, setLsLoading] = useState(true);
+	const [isLoading2, setLsLoading2] = useState(true);
 
 	useMemo(() => {
 		const fetchData = () => {
@@ -46,6 +48,7 @@ const MyHistory = () => {
 				} else {
 					setIsCannotMetamask(false);
 				}
+				setLsLoading(false);
 			});
 		};
 		if (window.ethereum) {
@@ -64,10 +67,10 @@ const MyHistory = () => {
 					arr2.push({ number: item, address: `${item}${selectPreiod}` });
 				});
 				setMyListLottery(arr2);
-				setLsLoading(false);
+				setLsLoading2(false);
 			}
 		};
-		if (myPreiod.length > 0) {
+		if (selectPreiod !== "") {
 			fetchData();
 		}
 	}, [myPreiod, selectPreiod]);
@@ -81,26 +84,27 @@ const MyHistory = () => {
 					{browserIsCannotMetamask ? (
 						<>
 							{isCannotMetamask ? (
-								<>
-									<div className="flex justify-center">
-										<div className="w-11/12">
-											<div className="w-full">
-												<br />
-												<h4 style={{ textAlign: "center" }}>ประวัติการซื้อของฉัน</h4>
-
-												{myPreiod.length > 0 ? (
-													<>
-														<div className="flex justify-between ">
-															<p>{`งวด ${selectPreiod}`}</p>
-															<Select
-																options={myPreiod}
-																defaultValue={myPreiod[myPreiod.length - 1]}
-																onChange={(values) => {
-																	setSelectPreiod(values.value);
-																}}
-															/>
-														</div>
-
+								<div className="flex justify-center">
+									<div className="w-11/12">
+										<div className="w-full">
+											<br />
+											<h4 style={{ textAlign: "center" }}>ประวัติการซื้อของฉัน</h4>
+											{myPreiod.length > 0 ? (
+												<>
+													<div className="flex justify-between ">
+														<p>{`งวด ${selectPreiod}`}</p>
+														<Select
+															options={myPreiod}
+															defaultValue={myPreiod[myPreiod.length - 1]}
+															onChange={(values) => {
+																setSelectPreiod(values.value);
+																setLsLoading2(true);
+															}}
+														/>
+													</div>
+													{isLoading2 ? (
+														<Loading />
+													) : (
 														<CustomTable striped bordered hover className="text-center">
 															<thead>
 																<tr>
@@ -121,12 +125,12 @@ const MyHistory = () => {
 																})}
 															</tbody>
 														</CustomTable>
-													</>
-												) : null}
-											</div>
+													)}
+												</>
+											) : null}
 										</div>
 									</div>
-								</>
+								</div>
 							) : (
 								<Center>
 									<h1> Please Connect metamask</h1>
