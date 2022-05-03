@@ -14,7 +14,8 @@ const DetailEtc = () => {
 	const [listBuyer, setListBuyer] = useState([]);
 	const [periodAll, setPeriodAll] = useState([]);
 	const [isLoading, setLsLoading] = useState(true);
-	//called only once
+
+	
 	useEffect(() => {
 		const fetchData = () => {
 			getBuyerResult().then((res) => {
@@ -30,9 +31,7 @@ const DetailEtc = () => {
 
 		fetchData();
 	}, []);
-	/* 	{isLoading ? (
-		<Loading />
-	) : ()} */
+
 	return (
 		<MasterLayout>
 			<br />

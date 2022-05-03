@@ -1,91 +1,119 @@
-import { Accordion, Table } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
+import { getAward, getLotteryDetailByAddress, getPeriodAll, getPeriodDetail } from "util/lottery";
 
-import Flex from "components/Gobal/Flex/Flex";
-import Lottery from "components/Gobal/Lottery/Lottery";
-import { getPeriodAll } from "util/lottery";
+import Loading from "components/Gobal/Loading/Loading";
+import Select from "react-select";
+import { Table } from "react-bootstrap";
 import styled from "styled-components";
 
 const Lotteries = () => {
-	const [periodAll, setPeriodAll] = useState([]);
-	const [showAccordion, setShowAccordion] = useState("0");
-	//called only once
+	//const [periodAll, setPeriodAll] = useState([]);
+
+	const [isLoading, setIsLoading] = useState(true);
+	const [myPeriod, setMyPeriod] = useState([]);
+	const [selectPreiod, setSelectPreiod] = useState("");
+	const [select, setSelect] = useState(0);
+	const [listLottery, setListLottery] = useState([]);
+
 	useEffect(() => {
-		const fetchData = () => {
-			getPeriodAll().then((res) => {
-				setPeriodAll(res);
-			});
+		const fetchData = async () => {
+			const periodAll = await getPeriodAll();
+			//setPeriodAll(periodAll);
+			setMyPeriod(
+				periodAll.map((item) => ({
+					value: item,
+					label: item,
+				}))
+			);
+			const arr = [];
+			for (let i = 0; i < periodAll.length; i++) {
+				const periodDetail = await getPeriodDetail(periodAll[i]);
+				const arr2 = [];
+				for (let j = 0; j < periodDetail.length; j++) {
+					const address = `${periodDetail[j]}${periodAll[i]}`;
+					const lotteryDetailByAddress = await getLotteryDetailByAddress(
+						periodDetail[j],
+						periodAll[i]
+					);
+					arr2.push({
+						address: address,
+						number: periodDetail[j],
+						listAddress: lotteryDetailByAddress.listAddress,
+						amount: lotteryDetailByAddress.amount,
+					});
+				}
+
+				const award = await getAward(periodAll[i]);
+				arr.push({
+					period: periodAll[i],
+					listLoyttery: arr2,
+					isAwarding: award.isAwarding,
+				});
+			}
+			setListLottery(arr);
+			setIsLoading(false);
 		};
 		fetchData();
 	}, []);
 
+
 	return (
 		<Wapper>
-			<CustomAccordion>
-				{periodAll.map((item, i) => {
-					return (
-						<Accordion.Item eventKey={i.toString()}>
-							<CustomAccordionHeader>
-								<Flex
-									onClick={() => {
-										if (showAccordion === i.toString()) {
-											setShowAccordion("");
-										} else {
-											setShowAccordion(i.toString());
-										}
-									}}
-								>
-									<h4>{`Period => ${item}`}</h4>
-									{showAccordion === i.toString() ? (
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="40"
-											height="40"
-											fill="currentColor"
-											class="bi bi-arrow-down-square-fill"
-											viewBox="0 0 16 16"
-										>
-											<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z" />
-										</svg>
-									) : (
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="40"
-											height="40"
-											fill="currentColor"
-											class="bi bi-arrow-up-square-fill"
-											viewBox="0 0 16 16"
-										>
-											<path d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z" />
-										</svg>
-									)}
-								</Flex>
-							</CustomAccordionHeader>
-							<Accordion.Body>
-								<Lottery period={item} />
-							</Accordion.Body>
-							<hr />
-						</Accordion.Item>
-					);
-				})}
-			</CustomAccordion>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<>
+					<div className="flex justify-between ">
+						<p>{`งวด ${selectPreiod}`}</p>
+						<Select
+							options={myPeriod}
+							defaultValue={myPeriod[myPeriod.length - 1]}
+							onChange={(values) => {
+								setSelectPreiod(values.value);
+								setSelect(myPeriod.findIndex((item) => item.value === values.value));
+							}}
+						/>
+					</div>
+					<p>{`สถานะการออกรางวัล ${
+						listLottery[select].isAwarding ? "ออกรางวัลไปแล้ว" : "ยังไม่ได้ออกรางวัล"
+					}`}</p>
+					<CustomTable bordered hover responsive striped className="text-center">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>หมายเลขล็อตเตอรี่</th>
+								<th>จำนวนคงเหลือ (ใบ)</th>
+								<th>Address ล็อตเตอรี่</th>
+								<th>Address ผู้ซื้อ</th>
+							</tr>
+						</thead>
+						{(listLottery[select].listLoyttery || []).map((item, i) => {
+							return (
+								<tr key={i}>
+									<td>{i + 1}</td>
+									<td>{item.number}</td>
+									<td>{item.amount}</td>
+									<td>{item.address}</td>
+									<td>
+										<ul>
+											{item.listAddress.map((item2, j) => {
+												return <li key={j}>{item2}</li>;
+											})}
+										</ul>
+									</td>
+								</tr>
+							);
+						})}
+					</CustomTable>
+				</>
+			)}
 		</Wapper>
 	);
 };
 
-const CustomAccordionHeader = styled(Accordion.Header)`
-	button {
-		width: 100%;
-	}
-`;
-const CustomAccordion = styled(Accordion)`
-	width: 90%;
-	background-color: #e6f7ff;
+const Wapper = styled.div``;
+const CustomTable = styled(Table)`
+	background-color: snow;
 `;
 
-
-const Wapper = styled.div`
-	display: flex;
-	justify-content: center;
-`;
 export default Lotteries;
