@@ -5,16 +5,21 @@ import styled from "styled-components";
 const Loading = () => {
 	return (
 		<WapperCenter>
-			<h1> Loading</h1>
-			<ReactLoading color={"black"} />
+			<div class="grid content-center h-full">
+				<div className="w-full">
+					<div className="flex justify-center">
+						<ReactLoading color={"black"} type={"spinningBubbles"} />
+					</div>
+					<div className="flex justify-center">
+						<h1 className="flex justify-center"> Loading</h1>
+					</div>
+				</div>
+			</div>
 		</WapperCenter>
 	);
 };
 const WapperCenter = styled.div`
-	display: flex;
 	width: 100%;
 	height: 100vh;
-	justify-content: center;
-	align-items: center;
 `;
 export default Loading;

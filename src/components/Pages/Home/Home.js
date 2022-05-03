@@ -15,7 +15,7 @@ const HomePage = () => {
 				if (res.length > 0) {
 					setPeriodLast([res[res.length - 1]]);
 				}
-				setLsLoading(false);
+				//setLsLoading(false);
 			});
 		};
 		fetch();
