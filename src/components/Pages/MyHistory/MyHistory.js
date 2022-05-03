@@ -96,14 +96,12 @@ const MyHistory = () => {
 																options={myPreiod}
 																defaultValue={myPreiod[myPreiod.length - 1]}
 																onChange={(values) => {
-																	console.log("values.value")
-																	console.log(values.value)
 																	setSelectPreiod(values.value);
 																}}
 															/>
 														</div>
 
-														<CustomTable striped bordered hover>
+														<CustomTable striped bordered hover className="text-center">
 															<thead>
 																<tr>
 																	<th>#</th>

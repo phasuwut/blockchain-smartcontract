@@ -95,3 +95,8 @@
     width: 1200px;
     margin-left: calc(50% - 1200px/2)
 }
+
+th, td {
+  text-align: center;
+
+}

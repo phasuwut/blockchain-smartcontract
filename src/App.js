@@ -19,15 +19,14 @@ import SearchPage from "components/Pages/Search/Search";
 	import SmartContractTest1 from "components/Pages/SmartContract/Test-1/Test1";
  */
 
-
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route>
 					<Route index element={<HomePage />} />
-					<Route path="search" element={<SearchPage />} />
 					<Route path="home" element={<HomePage />} />
+					<Route path="search" element={<SearchPage />} />
 					<Route path="back-office" element={<BackOffice />} />
 					<Route path="my-detail" element={<MyDetail/>} />
 					<Route path="detail-all" element={<DetailEtc />} />

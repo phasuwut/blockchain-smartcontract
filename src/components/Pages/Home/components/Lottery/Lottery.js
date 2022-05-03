@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { getAward, getLotteryDetailByAddress, getPeriodDetail } from "util/lottery";
 
 import Center from "components/Gobal/Center/Center";
-import Loading from "components/Gobal/Loading/Loading"
+import Loading from "components/Gobal/Loading/Loading";
 import { Table } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -11,8 +11,8 @@ const Lottery = ({ period }) => {
 	const [listLottery, setListLottery] = useState([]);
 	const [isLoading, setLsLoading] = useState(true);
 
-	useEffect(() => {
-		const fetchMessage = async () => {
+	useMemo(() => {
+		const fetch = async () => {
 			const arr = [];
 			const periodDetail = await getPeriodDetail(period);
 
@@ -33,25 +33,27 @@ const Lottery = ({ period }) => {
 			setListLottery(arr);
 			setLsLoading(false);
 		};
-		fetchMessage();
-	}, [period]);
+		if (period !== "") {
+			fetch();
+		}
+	}, []);
 
 	return (
 		<div>
 			<hr />
 			{isLoading ? (
-				<Loading/>
+				<Loading />
 			) : (
 				<Center>
 					<div>
 						<p>{`สถานะการออกรางวัล ${isAwarding ? "ออกรางวัลไปแล้ว" : "ยังไม่ได้ออกรางวัล"}`}</p>
-						<CustomTable striped bordered hover>
+						<CustomTable striped bordered hover className="text-center">
 							<thead>
 								<tr>
 									<th>หมายเลขล็อตเตอรี่</th>
 									<th>จำนวนคงเหลือ (ใบ)</th>
 									<th>Address ล็อตเตอรี่</th>
-									<th>Address ผู้ซื้อ</th>
+									<th >Address ผู้ซื้อ</th>
 								</tr>
 							</thead>
 							<tbody>

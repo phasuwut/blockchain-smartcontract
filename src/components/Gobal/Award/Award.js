@@ -105,7 +105,7 @@ const Award = ({ isShowButtonAwarding = false }) => {
 						</Col>
 					</Row>
 					<br />
-					<CustomTable bordered hover responsive striped>
+					<CustomTable bordered hover responsive striped className="text-center">
 						<thead>
 							<tr>
 								<th>#</th>
