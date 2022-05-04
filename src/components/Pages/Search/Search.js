@@ -10,6 +10,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 import Center from "components/Gobal/Center/Center";
+import { Link } from "react-router-dom";
 import Loading from "components/Gobal/Loading/Loading";
 import MasterLayout from "../../../components/Layout/MasterLayout/MasterLayout";
 import React from "react";
@@ -119,29 +120,31 @@ const SearchPage = () => {
 
 	return (
 		<MasterLayout>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<Wepper>
-						{!browserIsCannotMetamask ? (
+			<Wepper>
+				{!browserIsCannotMetamask ? (
+					<Center>
+						<h1> Please change browser</h1>
+					</Center>
+				) : (
+					<>
+						{!isCannotMetamask ? (
 							<Center>
-								<h1> Please change browser</h1>
+								<h1> Please Connect metamask</h1>
 							</Center>
 						) : (
 							<>
-								{!isCannotMetamask ? (
+								{!isRegistor ? (
 									<Center>
-										<h1> Please Connect metamask</h1>
+										<Link to="/register">
+											<h1> Please register</h1>
+										</Link>
 									</Center>
 								) : (
-									<>
-										{!isRegistor ? (
-											<Center>
-												<h1> Please register</h1>
-											</Center>
+									<div>
+										{isLoading ? (
+											<Loading />
 										) : (
-											<div>
+											<>
 												<br />
 												<div className="form-group">
 													<Row className="justify-content-md-center">
@@ -204,34 +207,34 @@ const SearchPage = () => {
 															})}
 													</Row>
 												</div>
-											</div>
+											</>
 										)}
-									</>
+									</div>
 								)}
 							</>
 						)}
+					</>
+				)}
 
-						<br />
-					</Wepper>
+				<br />
+			</Wepper>
 
-					<Modal show={show} onHide={handleClose}>
-						<Modal.Body>
-							<h6>{`คุณต้องการซื้อ เลข ${selectItem}  งวดวันที่ ${period} หรือไม่ ?`}</h6>
-							<br />
+			<Modal show={show} onHide={handleClose}>
+				<Modal.Body>
+					<h6>{`คุณต้องการซื้อ เลข ${selectItem}  งวดวันที่ ${period} หรือไม่ ?`}</h6>
+					<br />
 
-							<p id="status">{status.status}</p>
-						</Modal.Body>
-						<Modal.Footer>
-							<Button variant="primary" onClick={handleOnBuy} disabled={isClickBuy}>
-								ซื้อ
-							</Button>
-							<Button variant="secondary" onClick={handleClose}>
-								Close
-							</Button>
-						</Modal.Footer>
-					</Modal>
-				</>
-			)}
+					<p id="status">{status.status}</p>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="primary" onClick={handleOnBuy} disabled={isClickBuy}>
+						ซื้อ
+					</Button>
+					<Button variant="secondary" onClick={handleClose}>
+						Close
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</MasterLayout>
 	);
 };
