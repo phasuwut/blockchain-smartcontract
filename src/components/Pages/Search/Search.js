@@ -175,9 +175,7 @@ const SearchPage = () => {
 																	>
 																		<Card.Body>
 																			<Card.Title>
-																				งวดวันที่ : {period.substring(0, 2)}{" "}
-																				{period.substring(2, 4)}{" "}
-																				{parseInt(period.substring(4)) + 543}
+																				งวดวันที่ : {period}
 																			</Card.Title>
 																			<Card.Subtitle className="mb-2 text-muted">
 																				คงเหลือ : {item.amount} ใบ

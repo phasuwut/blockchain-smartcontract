@@ -44,7 +44,7 @@ const MasterLayoutNavbar = () => {
 			<Navbar.Collapse id="basic-navbar-nav">
 				<Nav className="mr-auto">
 					<Nav.Link href="home">Home</Nav.Link>
-					<Nav.Link href="search">Search</Nav.Link>
+					<Nav.Link href="search">การซื้อขาย Lottery</Nav.Link>
 					<Nav.Link href="history">ประวัติการซื้อของฉัน</Nav.Link>
 					<Nav.Link href="award">การออกรางวัล</Nav.Link>
 					<NavDropdown title="Tools" id="basic-nav-dropdown">
